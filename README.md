@@ -1,6 +1,6 @@
 # 🚀 DAM1 Java Exercises
 
-Java programming exercises completed during the 1st year of the **DAM (Multiplatform Application Development)** program at **CPIFP Alan Turing (Málaga)**. Most of the exercises are taken from the books "Aprende Java con Ejercios" Vol 1 & Vol 2.
+Java programming exercises completed during the 1st year of the **DAM (Multiplatform Application Development)** program at **CPIFP Alan Turing (Málaga)**. Most of the exercises are taken from the book "Aprende Java con Ejercios".
 
 ---
 
@@ -26,9 +26,6 @@ The goal of this repository is to document and share my learning progress in **J
 ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)  
 ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)  
 ![VS Code](https://img.shields.io/badge/VSCode-0078d7?style=for-the-badge&logo=visualstudiocode&logoColor=white)  
-![IntelliJ IDEA](https://img.shields.io/badge/IntelliJIDEA-000000?style=for-the-badge&logo=intellijidea&logoColor=white)  
-![Eclipse](https://img.shields.io/badge/Eclipse-2C2255?style=for-the-badge&logo=eclipse&logoColor=white)  
-![NetBeans](https://img.shields.io/badge/NetBeans-1B6AC6?style=for-the-badge&logo=apache-netbeans-ide&logoColor=white)  
 
 ---
 
@@ -36,22 +33,23 @@ The goal of this repository is to document and share my learning progress in **J
 
 ## Units
 
-### Unit 1: 
+### Unit 1: Output to display
 
-### Unit 2:
+### Unit 2: Variables
 
-### Unit 3:
+### Unit 3: Keyboard input
 
-### Unit 4:
+### Unit 4: Condicional statements (if and switch)
 
-### Unit 5:
+### Unit 5: Loops
 
-### Unit 6:
+### Unit 6: Random numbers
 
-### Unit 7:
+### Unit 7: Arrays
 
-### Unit 8:
+### Unit 8: Functions
 
+### Unit 9: Two-dimensional arrays
 
 ---
 
@@ -70,7 +68,7 @@ The goal of this repository is to document and share my learning progress in **J
 
 # 🚀 Ejercicios Java DAM1
 
-Ejercicios de programación en **Java** realizados durante el 1º curso del **Ciclo DAM (Desarrollo de Aplicaciones Multiplataforma)** en el **CPIFP Alan Turing (Málaga)**. La mayor parte de los ejercicios están extraídos de los libros "Aprende Java con Ejercicios" Vol. 1 y Vol. 2.
+Ejercicios de programación en **Java** realizados durante el 1º curso del **Ciclo DAM (Desarrollo de Aplicaciones Multiplataforma)** en el **CPIFP Alan Turing (Málaga)**. La mayor parte de los ejercicios están extraídos del libro "Aprende Java con Ejercicios".
 
 ---
 
@@ -97,9 +95,6 @@ El propósito de este repositorio es documentar y compartir mi progreso en el ap
 ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)  
 ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)  
 ![VS Code](https://img.shields.io/badge/VSCode-0078d7?style=for-the-badge&logo=visualstudiocode&logoColor=white)  
-![IntelliJ IDEA](https://img.shields.io/badge/IntelliJIDEA-000000?style=for-the-badge&logo=intellijidea&logoColor=white)  
-![Eclipse](https://img.shields.io/badge/Eclipse-2C2255?style=for-the-badge&logo=eclipse&logoColor=white)  
-![NetBeans](https://img.shields.io/badge/NetBeans-1B6AC6?style=for-the-badge&logo=apache-netbeans-ide&logoColor=white)  
 
 ---
 
@@ -107,22 +102,23 @@ El propósito de este repositorio es documentar y compartir mi progreso en el ap
 
 ## Temas
 
-### Tema 1:
+### Tema 1: Salida de datos por pantalla
 
-### Tema 2:
+### Tema 2: Variables
 
-### Tema 3:
+### Tema 3: Lectura de datos desde teclado
 
-### Tema 4:
+### Tema 4: Sentencia condicional (if y switch)
 
-### Tema 5:
+### Tema 5: Bucles
 
-### Tema 6:
+### Tema 6: Número aleatorios
 
-### Tema 7:
+### Tema 7: Arrays
 
-### Tema 8:
+### Tema 8: Funciones
 
+### Tema 9: Arrays bidimensionales
 
 ---
 
