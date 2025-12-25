@@ -1,0 +1,28 @@
+public class App {
+    public static void main(String[] args) throws Exception {
+
+		boolean correcto = false;
+		int altura = 0;
+
+		do {
+			try {
+				System.out.print("Introduzca la la altura de la figura: ");
+				altura = Integer.parseInt(System.console().readLine());
+				correcto = altura > 0;
+				if (!correcto) System.out.println("La altura debe ser mayor de 0.");
+			}
+			catch (NumberFormatException e) {
+				System.out.println("El número debe ser un entero.");
+			}
+			catch (Exception e) {
+				System.out.println("Ha ocurrido un error inesperado.");
+			}
+		} while (!correcto);
+
+		for (int i = 1; i <= altura; i++) {
+			for (int j = 1; j <= altura; j++)
+				System.out.print(((i == 1 && j <= altura) || j == i || j == altura) ? "*" : " ");
+			System.out.println();
+		}
+	}
+}
