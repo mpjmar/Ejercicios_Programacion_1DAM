@@ -11,22 +11,22 @@ public class App {
     }
 
 	public static int[] corteza(int[][] n) {
-		int alto = n.length;
-		int ancho = n[0].length;
-		int longitud = alto * 2 + (ancho - 2) * 2;
+		int filas = n.length;
+		int columnas = n[0].length;
+		int longitud = filas * 2 + (columnas - 2) * 2;
 		int[] corteza = new int[longitud];
 		int pos = 0;
 
-		for (int i = 0; i < ancho; i++)
+		for (int i = 0; i < columnas; i++)
 			corteza[pos++] = n[0][i];
 		
-		for (int i = 1; i < alto; i++)
-			corteza[pos++] = n[i][ancho - 1];
+		for (int i = 1; i < filas; i++)
+			corteza[pos++] = n[i][columnas - 1];
 
-		for (int i = ancho - 2; i >= 0; i--)
-			corteza[pos++] = n[alto - 1][i];
+		for (int i = columnas - 2; i >= 0; i--)
+			corteza[pos++] = n[filas - 1][i];
 
-		for (int i = alto - 2; i > 0; i--)
+		for (int i = filas - 2; i > 0; i--)
 			corteza[pos++] = n[i][0];
 
 		return corteza;
