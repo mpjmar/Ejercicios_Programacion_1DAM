@@ -2,14 +2,15 @@ public class Tablero {
 
 	public static void juega(int[][] mapa) {
 		boolean encontrado = false;
+		int oportunidades = 6;
 		System.out.println("\n¡BUSCA EL TESORO!\n");
 		do {
 			imprimeTablero(mapa);
+			System.out.printf("%nTienes %d oportunidades!%n", oportunidades--);
 			int[] coord = pideCoord(mapa);
-			coord[1] = volteaCoord(coord[1], mapa.length - 1);
 			int intento = compruebaCoordenadas(mapa, coord);;
 			encontrado = intento == 1 || intento == 2;
-		} while (!encontrado);
+		} while (!encontrado && oportunidades > 0);
 	}
 
 	public static int compruebaCoordenadas(int[][] mapa, int[] coord) {
@@ -17,9 +18,14 @@ public class Tablero {
 		final int MINA = 1;
         final int TESORO = 2;
 		final int INTENTO = 3;
-		switch(mapa[coord[1]][coord[0]]) {
+		int x = coord[1], y = coord[0];
+		int[] coordMina = buscaMina(mapa);
+		int minaX = coordMina[1], minaY = coordMina[0];
+		switch(mapa[x][y]) {
 			case VACIO:
-				mapa[coord[1]][coord[0]] = INTENTO;
+				mapa[x][y] = INTENTO;
+				if ((Math.abs(x - minaX) < 2) && (Math.abs(y - minaY) < 2))
+					System.out.println("¡Cuidado, hay una mina cerca!\n");
 				break;
 			case MINA:
 				System.out.println("¡Lo siento, has perdido!\n");
@@ -30,24 +36,7 @@ public class Tablero {
 			default:
 				break;
 		}
-		avisaMina(mapa, coord);
 		return mapa[coord[1]][coord[0]];
-	}
-
-	public static void avisaMina(int[][] mapa, int[] coord) {
-		int MINA = 1, X = coord[1], Y = coord[0];
-		for (int i = 0; i < mapa.length; i++) {
-			for (int j = 0; j < mapa[i].length; j++) {
-				if (mapa[i][j] == MINA && 
-					((i == X + 1 && j == Y) || (i == X - 1 && j == Y) ||
-					(i == X && j == Y + 1) || (i == X && j == Y - 1) ||
-					(i == X + 1 && j + 1 == Y) || (i == X - 1 && j - 1 == Y) ||
-					(i == X + 1 && j - 1 == Y) || (i == X - 1 && j + 1 == Y))) {
-					System.out.println("!Cuidado, hay una mina cerca!\n");
-					return;
-				}
-			}
-		}
 	}
 
 	public static int[] pideCoord(int[][] mapa) {
@@ -60,6 +49,7 @@ public class Tablero {
 				coord[0] = Integer.parseInt(System.console().readLine());
 				System.out.print("Coordenada y: ");
 				coord[1] = Integer.parseInt(System.console().readLine());
+				coord[1] = volteaCoord(coord[1], mapa.length - 1);
 				System.out.println("---------------");
 				correcto = coord[0] < mapa[0].length && coord[1] < mapa.length;
 				if (!correcto) System.out.println("Las coordenadas introducidas no son correctas.");
@@ -77,8 +67,22 @@ public class Tablero {
 		return filas - coord;
 	}
 
+	public static int[] buscaMina(int[][] mapa) {
+		int MINA = 1;
+		int[] coordMina = {-1, -1};
+		for (int i = 0; i < mapa.length; i++) {
+			for (int j = 0; j < mapa[i].length; j++) {
+				if (mapa[i][j] == MINA) {
+					coordMina[0] = j;
+					coordMina[1] = i;
+				}
+			}
+		}
+		return coordMina;
+	}
+
 	public static void imprimeTablero(int[][] mapa) {
-		int fila = 3;
+		int fila = mapa.length - 1;
 		for (int i = 0; i < mapa.length; i++) {
 			System.out.printf("%d|", fila--);
 			for (int j = 0; j < mapa[i].length; j++)
@@ -95,7 +99,7 @@ public class Tablero {
 		final int MINA = 1;
         final int TESORO = 2;
 		final int INTENTO = 3;
-		int fila = 3;
+		int fila = mapa.length - 1;
 		for (int i = 0; i < mapa.length; i++) {
 			System.out.printf("%d|", fila--);
 			for (int j = 0; j < mapa[i].length; j++)
