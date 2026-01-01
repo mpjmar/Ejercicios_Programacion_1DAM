@@ -12,7 +12,7 @@ public class Utils {
 	public static void muestraTablero(int[][] tablero) {
 		String borde = "▓▓";
 		String negra = "  ", blanca = "\033[47m  \033[0m";
-		String alfilB = "♗", alfilN = "♝";
+		String alfilB = "♗", alfilN = "♝", punto = "•";
 		boolean esBlanca = true;
 		int fila = 8;
 		muestraLetras(tablero);
@@ -40,18 +40,24 @@ public class Utils {
 	}
 
 	public static String[] calculaPosiciones(int[][] tablero, String pos) {
-		int fila = (int)(pos.charAt(1)) - 49;
+		int filas = tablero.length;
+		int fila = volteaFilas(filas, (int)(pos.charAt(1)) - 48);
 		int col = (int)(pos.charAt(0)) - 97;
+		int posicion = 0;
 		String[] solucion = new String[16];
 		for (int i = 0; i < tablero.length; i++)
 			for (int j = 0; j < tablero[i].length; j++)
-				if (Math.abs(fila - i) == Math.abs(col - j))
-					solucion[i] = convierteAString(i, j);
+				if (Math.abs(fila - i) == Math.abs(col - j) && (fila != i && col != j))
+					solucion[posicion++] = convierteAString(j, i, filas);
 		return solucion;
 	}
 
-	public static String convierteAString(int i, int j) {
-		char fila = (char)(j + 49);
+	public static int volteaFilas(int filas, int fila) {
+		return filas - fila;
+	}
+
+	public static String convierteAString(int i, int j, int filas) {
+		char fila = (char)(volteaFilas(filas, j) + 48);
 		char col = (char)(i + 97);
 		String sol = "" + col + fila;
 		return sol;
