@@ -8,7 +8,7 @@ public class Utils {
 		do {
 			try {
 				System.out.print("Introduzca la posición del álfil (por ejemplo, d5): ");
-				posicion = System.console().readLine();
+				posicion = System.console().readLine().toLowerCase();
 				correcto = validaPosicion(posicion);
 				if (!correcto) System.out.println("La posición introducida no es correcta.");
 			} catch (Exception e) {
@@ -19,9 +19,10 @@ public class Utils {
 	}
 
 	public static boolean validaPosicion(String pos) {
-		boolean correcta = false;
-		correcta = pos.charAt(0) >= 'a' && pos.charAt(0) <= 'h';
-		correcta = pos.charAt(1) >= 49 && pos.charAt(1) <= 56;
+		if (pos == null || pos.length() != 2)
+			return false;
+		boolean correcta = pos.charAt(0) >= 'a' && pos.charAt(0) <= 'h' &&
+			pos.charAt(1) >= '1' && pos.charAt(1) <= '8';
 		return correcta;
 	}
 
@@ -61,7 +62,7 @@ public class Utils {
 		int col = coord[1];
 		int posicion = 0;
 		int[][] resultados = new int[16][2];
-		incializaResultados(resultados);
+		inicializaResultados(resultados);
 		for (int i = 0; i < tablero.length; i++) {
 			for (int j = 0; j < tablero[i].length; j++) {
 				if (Math.abs(fila - i) == Math.abs(col - j) && (fila != i && col != j)) {
@@ -73,7 +74,7 @@ public class Utils {
 		return resultados;
 	}
 
-	public static void incializaResultados(int[][] coordenadas) {
+	public static void inicializaResultados(int[][] coordenadas) {
 		for (int i = 0; i < coordenadas.length; i++)
 			for (int j = 0; j < coordenadas[i].length; j++)
 				coordenadas[i][j] = -1;
@@ -103,49 +104,42 @@ public class Utils {
 	}
 
 	public static void pintaFila(int[][] resultados, int fila, boolean esBlanca, String pos) {
-		String negra = "  ", blanca = "\033[47m  \033[0m";
-		String alfilN = "\033[47m\033[30m ♗\033[0m", alfilB = " ♝";
-		String puntoB = " •", puntoN = "\033[47m\033[30m •\033[0m";
+		// final String INVERSO = "\033[7m";
+		final String RESET = "\033[0m";
+		final String NEGRA = "  ";
+		final String BLANCA = "\033[47m";
+		final String ALFIL = " ♝";
+		final String PUNTO = " •";
+
 		int[] posicion = convierteACoord(pos);
+
 		for (int col = 0; col < 8; col++) {
 			boolean pintada = false;
-			int posiciones = 0;
-			while (posiciones < resultados.length) {
-				if ((fila == posicion[0] && col == posicion[1]) && esBlanca) {
-					System.out.print(alfilN);
+			if ((fila == posicion[0] && col == posicion[1])) {
+					System.out.print(esBlanca ? BLANCA + ALFIL + RESET : ALFIL);
 					pintada = true;
-					break;
-				}
-				else if ((fila == posicion[0] && col == posicion[1]) && !esBlanca) {
-					System.out.print(alfilB);
-					pintada = true;
-					break;
-				}
-				else if ((fila == resultados[posiciones][0] && col == resultados[posiciones][1]) && esBlanca) {
-					System.out.print(puntoN);
-					pintada = true;
-					break;
-				}
-				else if ((fila == resultados[posiciones][0] && col == resultados[posiciones][1]) && !esBlanca) {
-					System.out.print(puntoB);
-					pintada = true;
-					break;
-				}
-				else {
-					posiciones++;
+			}
+			else {
+				for (int i = 0; i < resultados.length && resultados[i][0] != -1; i++) {
+					if ((fila == resultados[i][0] && col == resultados[i][1])) {
+						System.out.print(esBlanca ? BLANCA + PUNTO + RESET : PUNTO);
+						pintada = true;
+					}
 				}
 			}
 			if (!pintada)
-				System.out.print(esBlanca ? blanca : negra);
+				System.out.print(esBlanca ? BLANCA + "  " + RESET : NEGRA);
 			esBlanca = !esBlanca;
-		}
+			}
 	}
 
 	public static int[] convierteACoord(String pos) {
 		int[] coord = new int[2];
-		int filas = 8;
-		coord[0] = volteaFilas(filas, (int)(pos.charAt(1)) - 48);
-		coord[1] = (int)(pos.charAt(0)) - 97;
+		final int FILAS = 8;
+		final int ASCII_CERO = 48;
+		final int ASCII_A = 97;
+		coord[0] = volteaFilas(FILAS, (int)(pos.charAt(1)) - ASCII_CERO);
+		coord[1] = (int)(pos.charAt(0)) - ASCII_A;
 		return coord;
 	}
 
@@ -163,12 +157,9 @@ public class Utils {
 
 	public static void muestraSolucion(int[][] tablero, int[][] resultados, String pos) {
 		pintaPosiciones(tablero, resultados, pos);
-		String[] soluciones = new String[16];
-		for (int i = 0; i < resultados.length && resultados[i][0] >= 0; i++)
-			soluciones[i] = convierteAString(resultados[i]);
 		System.out.println("El álfil puede moverse a las siguientes posiciones: ");
-		for (int i = 0; i < soluciones.length && soluciones[i] != null; i++)
-			System.out.print(soluciones[i] + " ");
+		for (int i = 0; i < resultados.length && resultados[i][0] >= 0; i++)
+			System.out.print(convierteAString(resultados[i]) + " ");
 		System.out.println();
 	}
 }
