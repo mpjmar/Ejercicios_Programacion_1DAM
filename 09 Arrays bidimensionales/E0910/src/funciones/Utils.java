@@ -1,36 +1,36 @@
 package funciones;
 
 public class Utils {
-	public static boolean modificaTablero(int[][] tablero, String entrada) throws InterruptedException {
-		boolean terminada = false;
-		int[] coord = pasaACoord(entrada);
-		boolean vacia = true;
-		int jugador = 1, ordenador = 2, huecos = 9;
+	public static int huecos = 9;
 
-		vacia = tablero[coord[0]][coord[1]] == 0;
-		if (vacia) {
-			tablero[coord[0]][coord[1]] = 1;
-			muestraTablero(tablero);
-			terminada = compruebaJugada(tablero, jugador);
-			if (huecos > 0 && terminada) {
-				System.out.println("El jugador ha ganado la partida.");
-				return true;
+	public static boolean modificaTablero(int[][] tablero, String entrada, boolean turnoJugador) throws InterruptedException {
+		boolean terminada = false;
+		int[] coord = new int[2];
+		boolean vacia = true;
+		int jugador = 1, ordenador = 2;
+
+		if (turnoJugador) {
+			coord = pasaACoord(entrada);
+			vacia = tablero[coord[0]][coord[1]] == 0;
+			if (vacia) {
+				tablero[coord[0]][coord[1]] = jugador;
+				huecos--;
 			}
+			else {
+				System.out.println("La posicion está ya ocupada. Pierdes el turno.");
+				return false;
+			}
+		}
+		else {
+			Thread.sleep(1000);
+			coord = juegaMaquina(tablero);
+			tablero[coord[0]][coord[1]] = ordenador;
 			huecos--;
 		}
-		else
-			System.out.println("La posicion está ya ocupada. Pierdes el turno.");
 		
-		Thread.sleep(1000);
-		
-		if (!terminada) {
-			juegaMaquina(tablero);
-			huecos--;
-			muestraTablero(tablero);
-		}
-		terminada = compruebaJugada(tablero, ordenador);
+		terminada = compruebaJugada(tablero, turnoJugador);
 		if (huecos > 0 && terminada) {
-			System.out.println("El ordenador ha ganado la partida.");
+			System.out.printf("%n¡¡El %s gana la partida!!%n%n", turnoJugador ? "jugador" : "ordenador");
 			return true;
 		}
 		if (huecos == 0) {
@@ -40,49 +40,47 @@ public class Utils {
 		return false;
 	}
 
-	public static boolean compruebaJugada(int[][] tablero, int valor) {
-		return compruebaHorizontal(tablero, valor) || compruebaVertical(tablero, valor) ||
-				compruebaDiagonales(tablero, valor);
+	public static boolean compruebaJugada(int[][] tablero, boolean turnoJugador) {
+		return compruebaHorizontal(tablero, turnoJugador) || compruebaVertical(tablero, turnoJugador) ||
+				compruebaDiagonales(tablero, turnoJugador);
 	}
 
-	public static boolean compruebaHorizontal(int[][] tablero, int valor) {
-		for (int fila = 0; fila < tablero.length; fila++) {
-			int col = 0;
-			while (col < tablero[fila].length && tablero[fila][col] == valor)
-				col++;
-			if (col == 3)
+	public static boolean compruebaHorizontal(int[][] tablero, boolean turnoJugador) {
+		int valor = turnoJugador ? 1 : 2;
+
+		for (int i = 0; i < tablero.length; i++)
+			if (tablero[i][0] == valor && tablero[i][1] == valor && tablero[i][2] == valor)
+				return true;
+		return false;
+	}
+
+	public static boolean compruebaVertical(int[][] tablero, boolean turnoJugador) {
+		int valor = turnoJugador ? 1 : 2;
+
+		for (int i = 0; i < tablero[0].length; i++) {
+			if (tablero[0][i] == valor && tablero[1][i] == valor && tablero[2][i] == valor)
 				return true;
 		}
 		return false;
 	}
 
-	public static boolean compruebaVertical(int[][] tablero, int valor) {
-		for (int col = 0; col < tablero[0].length; col++) {
-			int fila = 0;
-			while (fila < tablero.length && tablero[fila][col] == valor)
-				fila++;
-			if (fila == 3)
-				return true;
-		}
-		return false;
-	}
-
-	public static boolean compruebaDiagonales(int[][] tablero, int valor) {
+	public static boolean compruebaDiagonales(int[][] tablero, boolean turnoJugador) {
+		int valor = turnoJugador ? 1 : 2;
 
 		return (tablero[0][0] == valor && tablero[1][1] == valor && tablero[2][2] == valor) ||
 			(tablero[0][2] == valor && tablero[1][1] == valor && tablero[2][0] == valor);
 	}
 
-	public static void juegaMaquina(int[][] tablero) {
+	public static int[] juegaMaquina(int[][] tablero) {
 		boolean vacia = false;
-		int fila = -1, col = -1;
+		int[] coord = new int[2];
 
 		do {
-			fila = (int)(Math.random() * 3);
-			col = (int)(Math.random() * 3);
-			vacia = tablero[fila][col] == 0;
+			coord[0] = (int)(Math.random() * 3);
+			coord[1] = (int)(Math.random() * 3);
+			vacia = tablero[coord[0]][coord[1]] == 0;
 		} while (!vacia);
-		tablero[fila][col] = 2;
+		return coord;
 	}
 
 	public static int[] pasaACoord(String entrada) {
@@ -99,11 +97,12 @@ public class Utils {
 	}
 
 	public static boolean validaEntrada(String entrada) {
+		char letra = entrada.charAt(0);
+		char num = entrada.charAt(1);
+
 		if (entrada.length() != 2)
 			return false;
-		return (entrada.charAt(0) == 'a' || entrada.charAt(0) == 'b' || 
-			entrada.charAt(0) == 'c') && (entrada.charAt(1) == '1' || 
-			entrada.charAt(1) == '2' || entrada.charAt(1) == '3');
+		return (letra >= 'a' && letra <= 'c') && (num >= '1' && num <= '3');
 	}
 
 	public static void muestraTablero(int[][] tablero) {
@@ -114,7 +113,7 @@ public class Utils {
 		for (int i = 0; i < tablero.length; i++) {
 			System.out.printf(" %s ░", letra--);
 			for (int j = 0; j < tablero[i].length; j++) {
-				String contenido = tablero[i][j] == 1 ? "∙" : tablero[i][j] == 2 ? "X" : " ";
+				String contenido = tablero[i][j] == 1 ? "◉" : tablero[i][j] == 2 ? "x" : " ";
 				System.out.printf("░ %s ", contenido);
 			}
 			System.out.println("░░\n   " + "░".repeat(15));
