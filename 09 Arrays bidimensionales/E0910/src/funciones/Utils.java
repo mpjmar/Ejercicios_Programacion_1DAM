@@ -5,34 +5,72 @@ public class Utils {
 		boolean terminada = false;
 		int[] coord = pasaACoord(entrada);
 		boolean vacia = true;
+		int jugador = 1, ordenador = 2, huecos = 9;
 
 		vacia = tablero[coord[0]][coord[1]] == 0;
 		if (vacia) {
 			tablero[coord[0]][coord[1]] = 1;
-			terminada = compruebaJugada(tablero);
-			if (terminada) {
+			muestraTablero(tablero);
+			terminada = compruebaJugada(tablero, jugador);
+			if (huecos > 0 && terminada) {
 				System.out.println("El jugador ha ganado la partida.");
 				return true;
 			}
+			huecos--;
 		}
 		else
 			System.out.println("La posicion está ya ocupada. Pierdes el turno.");
-		muestraTablero(tablero);
+		
 		Thread.sleep(1000);
-		if (!terminada)
+		
+		if (!terminada) {
 			juegaMaquina(tablero);
-		terminada = compruebaJugada(tablero);
-		if (terminada) {
+			huecos--;
+			muestraTablero(tablero);
+		}
+		terminada = compruebaJugada(tablero, ordenador);
+		if (huecos > 0 && terminada) {
 			System.out.println("El ordenador ha ganado la partida.");
+			return true;
+		}
+		if (huecos == 0) {
+			System.out.println("Partida terminada: no hay más casillas libres.");
 			return true;
 		}
 		return false;
 	}
 
-	public static boolean compruebaJugada(int[][] tablero) {
-		for (int i = 0; i < tablero.length; i++)
-			for (int j = 0; j < tablero[i].length; j++)
-				if (tablero[i][j] )
+	public static boolean compruebaJugada(int[][] tablero, int valor) {
+		return compruebaHorizontal(tablero, valor) || compruebaVertical(tablero, valor) ||
+				compruebaDiagonales(tablero, valor);
+	}
+
+	public static boolean compruebaHorizontal(int[][] tablero, int valor) {
+		for (int fila = 0; fila < tablero.length; fila++) {
+			int col = 0;
+			while (col < tablero[fila].length && tablero[fila][col] == valor)
+				col++;
+			if (col == 3)
+				return true;
+		}
+		return false;
+	}
+
+	public static boolean compruebaVertical(int[][] tablero, int valor) {
+		for (int col = 0; col < tablero[0].length; col++) {
+			int fila = 0;
+			while (fila < tablero.length && tablero[fila][col] == valor)
+				fila++;
+			if (fila == 3)
+				return true;
+		}
+		return false;
+	}
+
+	public static boolean compruebaDiagonales(int[][] tablero, int valor) {
+
+		return (tablero[0][0] == valor && tablero[1][1] == valor && tablero[2][2] == valor) ||
+			(tablero[0][2] == valor && tablero[1][1] == valor && tablero[2][0] == valor);
 	}
 
 	public static void juegaMaquina(int[][] tablero) {
