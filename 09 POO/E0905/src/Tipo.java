@@ -1,0 +1,3 @@
+public enum Tipo {
+	MARGARITA, CUATRO_ESTACIONES, FUNGHI
+}
