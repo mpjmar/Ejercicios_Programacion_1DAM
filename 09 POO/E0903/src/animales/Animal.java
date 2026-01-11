@@ -20,7 +20,7 @@ public abstract class Animal {
 		System.out.println("Zzzzzzz...");
 	}
 
-	public void come() {
-		System.out.println("Ñam ñam ñam");
+	public void come(String comida) {
+		System.out.println("Estoy comiendo " + comida + "!");
 	}
 }
