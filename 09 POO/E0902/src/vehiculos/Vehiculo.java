@@ -1,7 +1,7 @@
 package vehiculos;
 public abstract class Vehiculo {
-	private static int vehiculosCreados = 0;
-	private static int kilometrosTotales = 0;
+	protected static int vehiculosCreados = 0;
+	protected static int kilometrosTotales = 0;
 	private int kilometrosRecorridos;
 
 	public Vehiculo() {
@@ -13,7 +13,7 @@ public abstract class Vehiculo {
 		return this.kilometrosRecorridos;
 	}
 
-	public static int getKilometrosTotales() {
+	protected static int getKilometrosTotales() {
 		return Vehiculo.kilometrosTotales;
 	}
 
