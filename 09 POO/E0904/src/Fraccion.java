@@ -47,7 +47,7 @@ public class Fraccion {
 	}
 
 	public Fraccion divide(Fraccion f) {
-		return new Fraccion(this.signo * this.numerador * f.getDenominador(), this.denominador * f.getNumerador());
+		return multiplica(f.invertir());
 	}
 
 	public Fraccion simplifica() {
