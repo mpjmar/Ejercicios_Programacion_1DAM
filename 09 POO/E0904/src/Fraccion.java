@@ -8,11 +8,7 @@ public class Fraccion {
 		if (denominador == 0)
 			System.out.println("Una fracción no puede tener el denominador 0!");
 		else {
-			if (numerador * denominador < 0)
-				this.signo = -1;
-			else
-				this.signo = 1;
-			this.numerador = Math.abs(numerador);
+			this.signo = numerador * denominador < 0 ? -1 : 1;
 			this.denominador = Math.abs(denominador);
 		}
 	}
@@ -23,6 +19,10 @@ public class Fraccion {
 
 	public int getDenominador() {
 		return this.denominador;
+	}
+
+	public int getSigno() {
+		return this.signo;
 	}
 
 	public String toString() {
@@ -43,11 +43,11 @@ public class Fraccion {
 	}
 
 	public Fraccion divide(int n) {
-		return new Fraccion(this.signo * this.numerador, this.denominador * n);
+		return multiplica(new Fraccion(1, n));
 	}
 
 	public Fraccion divide(Fraccion f) {
-		return multiplica(f.invertir());
+		return multiplica(f.invierte());
 	}
 
 	public Fraccion simplifica() {
@@ -62,5 +62,29 @@ public class Fraccion {
 			}
 		}
 		return new Fraccion(signo * num, denom);
+	}
+
+	public Fraccion suma(int n) {
+		Fraccion f = new Fraccion(n, 1);
+		return suma(f);
+	}
+
+	public Fraccion suma(Fraccion f) {
+		int num1 = this.signo * this.numerador * f.getDenominador();
+		int num2 = f.getSigno() * f.getNumerador() * this.denominador;
+		int denom = this.denominador * f.getDenominador();
+		return new Fraccion(num1 + num2, denom);
+	}
+
+	public Fraccion resta(int n) {
+		return suma(-n);
+	}
+
+	public Fraccion resta(Fraccion f) {
+		return suma(f.negar());
+	}
+
+	public Fraccion negar() {
+		return new Fraccion(-this.signo * this.numerador, this.denominador);
 	}
 }
