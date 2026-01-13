@@ -6,16 +6,20 @@ public class Tiempo {
 		this.seg = horas * 3600 + min * 60 + seg;
 	}
 
+	public Tiempo (int seg) {
+		this.seg = seg;
+	}
+
 	public int getSeg(Tiempo t) {
 		return this.seg;
 	}
 
-	public int suma(Tiempo t) {
-		return this.seg + t.getSeg(t);
+	public Tiempo suma(Tiempo t) {
+		return new Tiempo(this.seg + t.getSeg(t));
 	}
 
-	public int resta(Tiempo t) {
-		return this.seg - t.getSeg(t);
+	public Tiempo resta(Tiempo t) {
+		return new Tiempo(this.seg - t.getSeg(t));
 	}
 
 	@Override
