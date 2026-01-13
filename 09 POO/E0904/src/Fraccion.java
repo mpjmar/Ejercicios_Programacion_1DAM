@@ -6,9 +6,10 @@ public class Fraccion {
 
 	public Fraccion(int numerador, int denominador) {
 		if (denominador == 0)
-			System.out.println("Una fracción no puede tener el denominador 0!");
+			System.out.println("Error");
 		else {
 			this.signo = numerador * denominador < 0 ? -1 : 1;
+			this.numerador = Math.abs(numerador);
 			this.denominador = Math.abs(denominador);
 		}
 	}
@@ -39,7 +40,7 @@ public class Fraccion {
 	}
 
 	public Fraccion multiplica(Fraccion f) {
-		return new Fraccion(this.signo * this.numerador * f.getNumerador(), this.denominador * f.getDenominador());
+		return new Fraccion(this.signo * this.numerador * f.getSigno() * f.getNumerador(), this.denominador * f.getDenominador());
 	}
 
 	public Fraccion divide(int n) {
