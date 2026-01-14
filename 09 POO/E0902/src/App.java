@@ -5,7 +5,8 @@ import vehiculos.Coche;
 public class App {
     public static void main(String[] args) throws Exception {
 
-		int opcion = 0, kms;
+		int opcion = 0;
+		int kms;
 		boolean valida = false;
 
 		Bicicleta bici = new Bicicleta(9);
@@ -41,9 +42,9 @@ public class App {
 					System.out.print("¿Cuántos kms?: ");
 					kms = Integer.parseInt(System.console().readLine());
 					if (opcion == 1)
-						bici.anda(kms);
+						bici.recorre(kms);
 					else
-						coche.anda(kms);
+						coche.recorre(kms);
 					break;
 				case 2:
 					bici.hazCaballito();

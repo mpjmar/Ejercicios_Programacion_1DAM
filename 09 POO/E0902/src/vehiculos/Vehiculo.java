@@ -1,25 +1,33 @@
 package vehiculos;
-public abstract class Vehiculo {
+public abstract class Vehiculo implements Movimiento {
+	
 	private static int vehiculosCreados = 0;
 	private static int kilometrosTotales = 0;
-	private int kilometrosRecorridos;
+	protected int kilometrosRecorridos = 0;
 
 	public Vehiculo() {
-		this.kilometrosRecorridos = 0;
 		vehiculosCreados++;
 	}
 
-	public int getKilometrosRecorridos() {
-		return this.kilometrosRecorridos;
+	public static int getVehiculosCreados() {
+		return vehiculosCreados;
 	}
 
 	public static int getKilometrosTotales() {
-		return Vehiculo.kilometrosTotales;
+		return kilometrosTotales;
 	}
 
-	public static void anda(int kms) {
-		System.out.printf("Andando %d kilómetros.%n", kms);
-		this.kilometrosRecorridos += kms;
-		Vehiculo.kilometrosTotales += kms;
+	public int getKilometrosRecorridos() {
+		return kilometrosRecorridos;
 	}
+
+	private static void acumulaKms(int kms) {
+		kilometrosTotales += kms;
+	}
+
+	@Override
+	public void recorre(int kms) {
+		acumulaKms(kms);
+	}
+
 }
