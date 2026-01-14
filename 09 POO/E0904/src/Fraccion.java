@@ -4,6 +4,11 @@ public class Fraccion {
 	private int numerador;
 	private int denominador;
 
+	public Fraccion(int n) {
+		this.numerador = n;
+		this.denominador = 1;
+	}
+
 	public Fraccion(int numerador, int denominador) {
 		if (denominador == 0)
 			System.out.println("Error");
@@ -26,17 +31,12 @@ public class Fraccion {
 		return this.signo;
 	}
 
-	public String toString() {
-		String res = this.numerador + "/" + this.denominador;		
-		return signo == -1 ? "-" + res : res;
-	}
-
 	public Fraccion invierte() {
 		return new Fraccion(this.signo * this.denominador, this.numerador);
 	}
 
 	public Fraccion multiplica(int n) {
-		return new Fraccion(this.signo * n * this.numerador, this.denominador);
+		return multiplica(new Fraccion(n));
 	}
 
 	public Fraccion multiplica(Fraccion f) {
@@ -44,7 +44,7 @@ public class Fraccion {
 	}
 
 	public Fraccion divide(int n) {
-		return multiplica(new Fraccion(1, n));
+		return divide(new Fraccion(n));
 	}
 
 	public Fraccion divide(Fraccion f) {
@@ -66,15 +66,14 @@ public class Fraccion {
 	}
 
 	public Fraccion suma(int n) {
-		Fraccion f = new Fraccion(n, 1);
-		return suma(f);
+		return suma(new Fraccion(n));
 	}
 
 	public Fraccion suma(Fraccion f) {
 		int num1 = this.signo * this.numerador * f.getDenominador();
 		int num2 = f.getSigno() * f.getNumerador() * this.denominador;
 		int denom = this.denominador * f.getDenominador();
-		return new Fraccion(num1 + num2, denom);
+		return new Fraccion(num1 + num2, denom).simplifica();
 	}
 
 	public Fraccion resta(int n) {
@@ -87,5 +86,11 @@ public class Fraccion {
 
 	public Fraccion negar() {
 		return new Fraccion(-this.signo * this.numerador, this.denominador);
+	}
+
+	@Override
+	public String toString() {
+		String res = this.numerador + "/" + this.denominador;		
+		return signo == -1 ? "-" + res : res;
 	}
 }
