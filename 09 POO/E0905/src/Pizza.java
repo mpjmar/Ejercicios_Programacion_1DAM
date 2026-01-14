@@ -14,15 +14,6 @@ public class Pizza {
 		pizzasPedidas++;
 	}
 
-	public void sirve() {
-		if (this.estado.equals("pedida")) {
-			this.estado = "servida";
-			pizzasServidas++;
-		}
-		else
-			System.out.println("esa pizza ya se ha servido");
-	}
-
 	public static int getTotalPedidas() {
 		return pizzasPedidas;
 	}
@@ -31,8 +22,17 @@ public class Pizza {
 		return pizzasServidas;
 	}
 
+	public boolean sirve() {
+		if (this.estado.equals("pedida")) {
+			this.estado = "servida";
+			pizzasServidas++;
+		}
+		else
+			return false;
+		return true;
+	}
+
 	public String toString() {
-		String res = "";
-		return "pizza " + this.tipo + " " + this.tamanio + ", " + this.estado;
+		return String.format("pizza " + tipo + " " + tamanio + ", " + estado);
 	}
 }
