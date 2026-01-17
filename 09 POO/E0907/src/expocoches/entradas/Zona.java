@@ -1,10 +1,12 @@
-package expocoches;
+package expocoches.entradas;
 
-public class Zona {
+import expocoches.interfaces.VentaEntradas;
+
+public class Zona implements VentaEntradas{
 
 	private int entradasPorVender;
 
-	public Zona(int n) {
+	public Zona(int n){
 		entradasPorVender = n;
 	}
 
