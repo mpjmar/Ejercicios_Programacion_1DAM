@@ -4,29 +4,41 @@ public class Gato {
 	private String color;
 	private String raza;
 	private int numero;
-	public static int orden = 1;
+	public static int orden = 0;
 
 	public Gato(String nombre, String color, String raza) {
 		this.nombre = nombre;
 		this.color = color;
 		this.raza = raza;
-		this.numero = orden++;
+		this.numero = ++orden;
 	}
 
 	public Gato() {
-		this.numero = orden++;
+		this.numero = ++orden;
 	}
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 
+	public String getNombre() {
+		return nombre;
+	}
+
 	public void setColor(String color) {
 		this.color = color;
 	}
 
+	public String getColor() {
+		return color;
+	}
+
 	public void setRaza(String raza) {
 		this.raza = raza;
+	}
+
+	public String getRaza() {
+		return raza;
 	}
 
 	public int getNumero() {
