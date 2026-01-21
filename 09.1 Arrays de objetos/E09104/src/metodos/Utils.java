@@ -12,7 +12,8 @@ public class Utils {
 				2. Nuevo disco
 				3. Modificar
 				4. Borrar
-				5. Salir """);
+				5. Salir 
+				""");
 	}
 
 	public static void muestraSubmenu() throws InvalidOption {

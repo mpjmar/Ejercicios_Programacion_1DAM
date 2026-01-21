@@ -95,7 +95,7 @@ public class App {
 				
 				%s
 				%s
-				
+
 				""", 
 				titulo, "=".repeat(len));
 
