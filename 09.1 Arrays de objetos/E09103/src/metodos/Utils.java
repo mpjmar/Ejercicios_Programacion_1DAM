@@ -15,7 +15,7 @@ public class Utils {
 				5. Salir """);
 	}
 
-	static String generaCodigo() {
+	public static String generaCodigo() {
 		String codigo = "";
 		for (int i = 0; i < 4; i++)
 			codigo += (char)((int)((Math.random() * (90 - 65 + 1)) + 65));
@@ -23,9 +23,10 @@ public class Utils {
 		return codigo;
 	}
 
-	public static void validaOpcion (int opcion) throws InvalidOption {
+	public static boolean validaOpcion (int opcion) throws InvalidOption {
 		if (opcion < 1 || opcion > 5)
 			throw new InvalidOption("La opción debe ser un número del 1 al 5.");
+		return true;
 	}
 
 	public static int buscaCodigo(Disco[] coleccion, String codigo) {

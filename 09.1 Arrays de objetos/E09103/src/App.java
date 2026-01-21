@@ -1,36 +1,43 @@
 import metodos.Utils;
+import Excepciones.InvalidOption;
 import metodos.Disco;
 
 public class App {
     public static void main(String[] args) throws Exception {
 		
+		boolean correcto = false;
 		int opcion = -1;
 		Disco[] coleccion = new Disco[100];
 		agregaEjemplo(coleccion, "Them Crooked Vultures", "New Fang", "Rock", 20);
 		agregaEjemplo(coleccion, "Queens of the Stone Age", "Lullabies To Paralize", "Stoner rock", 110);
 		agregaEjemplo(coleccion, "Placebo", "Meds", "Rock", 95);
-
 		do {
-			Utils.muestraMenu();
-			opcion = Integer.parseInt(System.console().readLine("Introduzca una opción: "));
-			Utils.validaOpcion(opcion);
-			switch (opcion) {
-				case 1:
-					muestraColeccion(coleccion);
-					break;
-				case 2:
-					agregaDisco(coleccion);
-					break;
-				case 3:
-					modificaDisco(coleccion);
-					break;
-				case 4:
-					borraDisco(coleccion);
-					break;
-				default:
-					break;
+			try {
+				Utils.muestraMenu();
+				opcion = Integer.parseInt(System.console().readLine("Introduzca una opción: "));
+				correcto = Utils.validaOpcion(opcion);
+				switch (opcion) {
+					case 1:
+						muestraColeccion(coleccion);
+						break;
+					case 2:
+						agregaDisco(coleccion);
+						break;
+					case 3:
+						modificaDisco(coleccion);
+						break;
+					case 4:
+						borraDisco(coleccion);
+						break;
+					default:
+						break;
+				}
+			} catch (NumberFormatException e) {
+				System.out.println("El número debe ser un entero.");
+			} catch (InvalidOption e) {
+				System.out.println(e.getMessage());
 			}
-		} while (opcion != 5);
+		} while (opcion != 5 || !correcto);
     }
 	
 	public static void muestraColeccion(Disco[] coleccion) {
@@ -105,10 +112,9 @@ public class App {
 
 		System.out.println("Duración: " + coleccion[pos].getDuracion());
 		System.out.print("Duración: ");
-		int nuevaDuracion = Integer.parseInt(System.console().readLine());
-		String stringDuracion = "" + nuevaDuracion;
-		if (stringDuracion != "")
-			coleccion[pos].setDuracion(nuevaDuracion);
+		String nuevaDuracion = System.console().readLine();
+		if (!nuevaDuracion.equals(""))
+			coleccion[pos].setDuracion(Integer.parseInt(nuevaDuracion));
 	}
 
 	public static void borraDisco(Disco[] coleccion) {
