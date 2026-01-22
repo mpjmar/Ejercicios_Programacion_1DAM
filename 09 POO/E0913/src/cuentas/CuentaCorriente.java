@@ -1,6 +1,8 @@
-public class CuentaCorriente {
+package cuentas;
+
+public class CuentaCorriente implements Operaciones {
 	
-	private long numCuenta;
+	private String numCuenta;
 	private double saldo;
 
 	public CuentaCorriente() {
@@ -13,8 +15,23 @@ public class CuentaCorriente {
 		this.saldo = saldo;
 	}
 
-	private long asignaNumero() {
-		return (long)(Math.random() * (9999999999L - 1000000000 + 1)) + 1000000000;
+	public static String asignaNumero() {
+		String numCuenta = "";
+		numCuenta += aleatorios(4);
+		numCuenta += " ";
+		numCuenta += aleatorios(4);
+		numCuenta += " ";
+		numCuenta += aleatorios(2);
+		numCuenta += " ";
+		numCuenta += aleatorios(10);
+		return numCuenta;
+	}
+
+	private static int aleatorios(int longitud) {
+		int res = 0;
+		for (int i = 0; i < longitud; i++) 
+			res = res * 10 + (int)(Math.random() * 10);
+		return res;
 	}
 
 	public void ingreso(double cantidad) {
