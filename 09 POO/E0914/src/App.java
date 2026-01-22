@@ -1,3 +1,5 @@
+import ficha.FichaDomino;
+
 public class App {
     public static void main(String[] args) throws Exception {
 		FichaDomino f1 = new FichaDomino(6, 1);
