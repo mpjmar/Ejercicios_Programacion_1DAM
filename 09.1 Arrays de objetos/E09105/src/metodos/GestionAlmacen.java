@@ -61,6 +61,7 @@ public class GestionAlmacen {
 		String confirmacion = System.console().readLine("¿Confirma que desea borrar este artículo? (si / no): ");
 		if (confirmacion.equalsIgnoreCase("si")) {
 			articulos[pos] = null;
+			Utils.desplazaArticulos(articulos, pos);
 			return "Artículo borrado";
 		}
 		else {
@@ -81,17 +82,63 @@ public class GestionAlmacen {
 			return "Lo siento, el código introducido no existe.";
 		System.out.println("Introduzca los nuevos datos del artículo o INTRO para dejarlos igual.");
 		
-		/* Código: cho1
-		Nuevo código:
-		Descripción: chocolatina
-		Nueva descripción:
-		Precio de compra: 0.75
-		Nuevo precio de compra:
-		Precio de venta: 2.25
-		Nuevo precio de venta: 2.95
-		Stock: 1250
-		Nuevo stock: */
+		System.out.println("Código: " + articulos[pos].getCodigo());
+		String nuevoCodigo = System.console().readLine("Nuevo código: ");
+		if (!nuevoCodigo.equals(""))
+			articulos[pos].setCodigo(nuevoCodigo);
+
+		System.out.println("Descripción: " + articulos[pos].getDescripcion());
+		String nuevaDescripcion = System.console().readLine("Nueva descripción: ");
+		if (!nuevaDescripcion.equals(""))
+			articulos[pos].setDescripcion(nuevaDescripcion);
+
+		System.out.println("Precio de compra: " + articulos[pos].getPrecioCompra());
+		String nuevoPrecioCompra = System.console().readLine("Nuevo precio de compra: ");
+		if (!nuevoPrecioCompra.equals(""))
+			articulos[pos].setPrecioCompra(Double.parseDouble(nuevoPrecioCompra));
+
+		System.out.println("Precio de venta: " + articulos[pos].getPrecioVenta());
+		String nuevoPrecioVenta = System.console().readLine("Nuevo precio de venta: ");
+		if (!nuevoPrecioVenta.equals(""))
+			articulos[pos].setPrecioVenta(Double.parseDouble(nuevoPrecioVenta));
+
+		System.out.println("Stock: " + articulos[pos].getStock());
+		String nuevoStock = System.console().readLine("Nuevo stock: ");
+		if (!nuevoStock.equals(""))
+			articulos[pos].setStock(Integer.parseInt(nuevoStock));
 
 		return "Se han actualizado los datos.";
+	}
+
+	public static void entrada(Articulo[] articulos) {
+		System.out.println("""
+			
+			ENTRADA DE MERCANCÍA
+			====================
+			""");
+		System.out.print("Por favor, introduzca el código del artículo: ");
+		String codigo = System.console().readLine();
+		int pos = Utils.buscaArticulo(articulos, codigo);
+		System.out.println("Entrada de mercancía del siguiente artículo:\n" + articulos[pos]);
+		System.out.print("Introduzca el número de unidades que entran: ");
+		int unidades = Integer.parseInt(System.console().readLine());
+		articulos[pos].setStock(articulos[pos].getStock() + unidades);
+		System.out.println("La mercancía ha entrado en el almacén.");
+	}
+
+	public static void salida(Articulo[] articulos) {
+		System.out.println("""
+
+			SALIDA DE MERCANCÍA
+			===================
+			""");
+		System.out.print("Por favor, introduzca el código del artículo: ");
+		String codigo = System.console().readLine();
+		int pos = Utils.buscaArticulo(articulos, codigo);
+		System.out.println("Salida de mercancía del siguiente artículo: \n" + articulos[pos]);
+		System.out.print("Introduzca el número de unidades que salen: ");
+		int unidades = Integer.parseInt(System.console().readLine());
+		articulos[pos].setStock(articulos[pos].getStock() - unidades);
+		System.out.println("La mercancía ha salido del almacén.");
 	}
 }

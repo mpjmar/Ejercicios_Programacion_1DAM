@@ -40,4 +40,11 @@ public class Utils {
 		return -1;
 	}
 
+	public static void desplazaArticulos(Articulo[] articulos, int pos) {
+		for (int i = pos + 1; i < articulos.length && articulos[i] != null; i++) {
+			articulos[i - 1] = articulos[i];
+			articulos[i] = null;
+		}
+	}
+
 }

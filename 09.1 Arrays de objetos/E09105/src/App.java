@@ -33,12 +33,12 @@ public class App {
 				case 4:
 					System.out.println(GestionAlmacen.modificar(articulos));
 					break;
-				/* case 5:
+				case 5:
 					GestionAlmacen.entrada(articulos);
 					break;
 				case 6:
 					GestionAlmacen.salida(articulos);
-					break; */
+					break;
 				default:
 					break;
 			}
@@ -47,7 +47,7 @@ public class App {
 
 	public static void agregarArticulos(Articulo[] articulos) {
 		articulos[0] = new Articulo("cho1", "chocolatina", 0.75, 2.25, 1000);
-		articulos[2] = new Articulo("pal2", "palomitas", 0.35, 1.25, 150);
-		articulos[7] = new Articulo("chi3", "chicle", 0.2, 0.9, 200);
+		articulos[1] = new Articulo("pal2", "palomitas", 0.35, 1.25, 150);
+		articulos[2] = new Articulo("chi3", "chicle", 0.2, 0.9, 200);
 	}
 }
