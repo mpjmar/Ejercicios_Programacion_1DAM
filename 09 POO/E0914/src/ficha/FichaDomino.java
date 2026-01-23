@@ -1,7 +1,5 @@
 package ficha;
 
-import 
-
 public class FichaDomino implements Ficha {
 	
 	private int valor1;
@@ -16,6 +14,7 @@ public class FichaDomino implements Ficha {
 			System.out.println("Los valores deben ser menores que 7.");
 	}
 
+	@Override
 	public FichaDomino voltea() {
 		int temp = valor1;
 		this.valor1 = valor2;

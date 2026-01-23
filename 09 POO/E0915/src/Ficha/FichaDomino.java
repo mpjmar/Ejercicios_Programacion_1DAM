@@ -1,4 +1,5 @@
-public class FichaDomino {
+package Ficha;
+public class FichaDomino implements Ficha {
 	
 	private int valor1;
 	private int valor2;
@@ -17,6 +18,7 @@ public class FichaDomino {
 		this.valor2 = creaValor(0, 6);
 	}
 
+	@Override
 	public FichaDomino voltea() {
 		int temp = valor1;
 		this.valor1 = valor2;
@@ -24,6 +26,7 @@ public class FichaDomino {
 		return this;
 	}
 
+	@Override
 	public boolean encaja(FichaDomino f) {
 		if (this.valor1 == f.valor1 || this.valor1 == f.valor2 || 
 			this.valor2 == f.valor1 || this.valor2 == f.valor2)

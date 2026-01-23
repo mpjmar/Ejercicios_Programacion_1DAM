@@ -30,8 +30,7 @@ public class Terminal {
 	}
 
 	public void llama(Terminal t, int seg) {
-		this.seg += seg;
+		this.seg = seg;
 		t.setSegundos(t.seg + seg);
 	}
-	
 }

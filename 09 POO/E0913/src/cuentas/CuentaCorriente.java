@@ -34,14 +34,17 @@ public class CuentaCorriente implements Operaciones {
 		return res;
 	}
 
+	@Override
 	public void ingreso(double cantidad) {
 		this.saldo += cantidad;
 	}
 
+	@Override
 	public void cargo(double cantidad) {
 		this.saldo -= cantidad;
 	}
 
+	@Override
 	public void transferencia(CuentaCorriente c, double cantidad) {
 		this.saldo -= cantidad;
 		c.saldo += cantidad;
@@ -49,6 +52,6 @@ public class CuentaCorriente implements Operaciones {
 
 	@Override
 	public String toString() {
-		return String.format("Número de cta: %d Saldo: %.2f€", numCuenta, saldo);
+		return String.format("Número de cta: %s Saldo: %.2f€", numCuenta, saldo);
 	}
 }

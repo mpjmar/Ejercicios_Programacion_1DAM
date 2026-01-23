@@ -3,5 +3,5 @@
 *.log
 bin/
 out/
-.vscode
+.vscode/
 .DS_Store
