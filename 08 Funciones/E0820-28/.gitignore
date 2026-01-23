@@ -1,6 +1,6 @@
 *.class
 *.jar
 *.log
-.bin/
-.out/
+bin/
+out/
 .vscode/

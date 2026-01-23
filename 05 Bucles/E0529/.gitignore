@@ -1,7 +1,7 @@
 *.class
 *.jar
 *.log
-.bin7
-.out/
+bin/
+out/
 .vscode/
 .DS_Store

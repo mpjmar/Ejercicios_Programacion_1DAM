@@ -1,7 +1,7 @@
 *.class
 *.jer
 *.log
-.bin/
-.out/
+bin/
+out/
 .vscode/
 .DS_Store
