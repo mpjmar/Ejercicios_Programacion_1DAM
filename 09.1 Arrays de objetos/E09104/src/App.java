@@ -1,7 +1,7 @@
-import metodos.Utils;
 import Excepciones.InvalidOption;
-import metodos.Disco;
-import metodos.GestorColeccion;
+import disco.Disco;
+import disco.GestorColeccion;
+import disco.Utils;
 
 public class App {
     public static void main(String[] args) throws Exception {

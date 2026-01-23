@@ -1,4 +1,4 @@
-package metodos;
+package disco;
 
 public class GestorColeccion {
 	public static void muestraColeccion(Disco[] coleccion) {

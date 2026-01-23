@@ -1,4 +1,4 @@
-package metodos;
+package disco;
 public class Disco {
 	
 	private String codigo;
@@ -7,16 +7,16 @@ public class Disco {
 	private String genero;
 	private int duracion;
 
-	public Disco(String autor, String titulo, String genero, int duracion) {
-		this.codigo = Utils.generaCodigo();
+	public Disco(String codigo, String autor, String titulo, String genero, int duracion) {
+		this.codigo = codigo;
 		this.autor = autor;
 		this.titulo = titulo;
 		this.genero = genero;
 		this.duracion = duracion;
 	}
 
-	public Disco() {
-		this.codigo = Utils.generaCodigo();
+	public Disco(String codigo) {
+		this.codigo = codigo;
 	}
 
 	public String getCodigo() {
