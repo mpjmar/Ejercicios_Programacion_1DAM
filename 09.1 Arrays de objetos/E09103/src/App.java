@@ -15,7 +15,7 @@ public class App {
 			try {
 				Utils.muestraMenu();
 				opcion = Integer.parseInt(System.console().readLine("Introduzca una opción: "));
-				correcto = Utils.validaOpcion(opcion);
+				correcto = Utils.validaOpcion(opcion, 1, 4);
 				switch (opcion) {
 					case 1:
 						muestraColeccion(coleccion);

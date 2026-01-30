@@ -7,6 +7,10 @@ public class Disco {
 	private String genero;
 	private int duracion;
 
+	public Disco() {
+		
+	}
+
 	public Disco(String codigo, String autor, String titulo, String genero, int duracion) {
 		this.codigo = codigo;
 		this.autor = autor;
