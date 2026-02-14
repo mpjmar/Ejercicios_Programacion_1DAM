@@ -42,7 +42,26 @@ public class App {
 					GestionAlmacen.entrada(articulos);
 					break;
 				case 6:
-					GestionAlmacen.salida(articulos);
+					ArrayList<Articulo> vendidos = new ArrayList<Articulo>();
+					int opcionSub = 0;
+					do {
+						try {
+							Utils.mostrarSubmenu();
+							opcionSub = Integer.parseInt(System.console().readLine());
+							Utils.validaOpcion(opcionSub, 1, 2);
+							if (opcionSub == 1) {
+								Articulo a = GestionAlmacen.venta(articulos);
+								if (a != null)
+									vendidos.add(a);
+							}
+						} catch (NumberFormatException e) {
+							System.out.println("El número debe ser un entero");
+						} catch (Exception e) {
+							System.out.println("Ha ocurrido un error inesperado.");
+						}
+					} while (opcionSub != 2);
+					if (vendidos.size() > 0)
+						System.out.println(Utils.mostrarFactura(vendidos));
 					break;
 				default:
 					break;

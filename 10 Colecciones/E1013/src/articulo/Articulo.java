@@ -6,9 +6,15 @@ public class Articulo {
 	private double precioCompra;
 	private double precioVenta;
 	private int stock;
+	private int unidVendidas;
 
 	public Articulo() {
-		
+		this.codigo = "";
+		this.descripcion = "";
+		this.precioCompra = 0.0;
+		this.precioVenta = 0.0;
+		this.stock = 0;
+		this.unidVendidas = 0;
 	}
 
 	public Articulo(String codigo, String descripcion, double precioCompra, double precioVenta, int stock) {
@@ -17,6 +23,7 @@ public class Articulo {
 		this.precioCompra = precioCompra;
 		this.precioVenta = precioVenta;
 		this.stock = stock;
+		this.unidVendidas = 0;
 	}
 
 	public String getCodigo() {
@@ -57,6 +64,14 @@ public class Articulo {
 
 	public void setStock(int stock) {
 		this.stock = stock;
+	}
+
+	public int getUnidVendidas() {
+		return unidVendidas;
+	}
+
+	public void setUnidVendidas(int unidVendidas) {
+		this.unidVendidas = unidVendidas;
 	}
 
 	@Override

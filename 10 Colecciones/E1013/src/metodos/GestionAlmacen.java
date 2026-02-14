@@ -137,23 +137,31 @@ public class GestionAlmacen {
 		System.out.println("Código no encontrado.");
 	}
 
-	public static void salida(ArrayList<Articulo> articulos) {
+	public static Articulo venta(ArrayList<Articulo> articulos) {
 		System.out.println("""
 
-			SALIDA DE MERCANCÍA
-			===================
+			VENTA
+			=====
 			""");
 		System.out.print("Por favor, introduzca el código del artículo: ");
 		String codigo = System.console().readLine();
 		for (Articulo a : articulos) {
 			if (a.getCodigo().equals(codigo)) {
-				System.out.println("Salida de mercancía del siguiente artículo: \n" + a);
-				System.out.print("Introduzca el número de unidades que salen: ");
+				System.out.println("Venta del siguiente artículo: \n" + a);
+				a.setUnidVendidas(0);
+				System.out.print("Introduzca el número de unidades que van a vender: ");
 				int unidades = Integer.parseInt(System.console().readLine());
-				a.setStock(a.getStock() - unidades);
-				System.out.println("La mercancía ha salido del almacén.");
+				if (unidades <= a.getStock()) {
+					a.setUnidVendidas(unidades);
+					a.setStock(a.getStock() - a.getUnidVendidas());
+				}
+				else 
+					System.out.println("No hay suficientes unidades");
+				System.out.println("Artículos añadidos al carrito.");
+				return a;
 			}
 		}
 		System.out.println("Código no encontrado.");
+		return null;
 	}
 }
