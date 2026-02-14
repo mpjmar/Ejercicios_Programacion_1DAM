@@ -1,5 +1,8 @@
 import metodos.GestionAlmacen;
 import metodos.Utils;
+
+import java.util.ArrayList;
+
 import articulo.Articulo;
 import excepciones.InvalidOptionException;
 
@@ -7,8 +10,10 @@ public class App {
     public static void main(String[] args) throws Exception {
 
 		int opcion = -1;
-		Articulo[] articulos = new Articulo[100];
-		agregarArticulos(articulos);
+		ArrayList<Articulo> articulos = new ArrayList<Articulo>();
+		articulos.add(new Articulo("cho1", "chocolatina", 0.75, 2.25, 1000));
+		articulos.add(new Articulo("pal2", "palomitas", 0.35, 1.25, 150));
+		articulos.add(new Articulo("chi3", "chicle", 0.2, 0.9, 200));
 		
 		do {
 			try {
@@ -43,11 +48,5 @@ public class App {
 					break;
 			}
 		} while (opcion != 7);
-	}
-
-	public static void agregarArticulos(Articulo[] articulos) {
-		articulos[0] = new Articulo("cho1", "chocolatina", 0.75, 2.25, 1000);
-		articulos[1] = new Articulo("pal2", "palomitas", 0.35, 1.25, 150);
-		articulos[2] = new Articulo("chi3", "chicle", 0.2, 0.9, 200);
 	}
 }
