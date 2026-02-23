@@ -27,10 +27,10 @@ public class CuentaCorriente implements Operaciones {
 		return numCuenta;
 	}
 
-	private static int aleatorios(int longitud) {
-		int res = 0;
+	private static String aleatorios(int longitud) {
+		String res = "";
 		for (int i = 0; i < longitud; i++) 
-			res = res * 10 + (int)(Math.random() * 10);
+			res += (int)(Math.random() * 10);
 		return res;
 	}
 
