@@ -3,16 +3,13 @@ import java.util.ArrayList;
 public class Carrito {
 
 	ArrayList<Elemento> cart;
-	private double total;
 	
 	public Carrito() {
 		cart = new ArrayList<Elemento>();
-		total = 0;
 	}
 
 	public void agrega(Elemento e) {
 		cart.add(e);
-		total += e.getPrice() * e.getAmount();
 	}
 
 	public int numeroDeElementos() {
@@ -20,6 +17,10 @@ public class Carrito {
 	}
 
 	public double importeTotal() {
+		double total = 0;
+
+		for (Elemento e : cart)
+			total += e.getPrice() * e.getAmount();
 		return total;
 	}
 
