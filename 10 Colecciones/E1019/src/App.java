@@ -18,19 +18,19 @@ public class App {
 		System.out.print("Introduzca una palabra y le daré los sinónimos: ");
 		String word = System.console().readLine();
 
-		ArrayList<String> sinonim = new ArrayList<>();
+		ArrayList<String> synonym = new ArrayList<>();
 		if (dictionary.containsKey(word)) {
 			String transl = dictionary.get(word);
 			for (Map.Entry<String, String> e : dictionary.entrySet()) {
 				if (e.getValue().equals(transl) && !e.getKey().equals(word))
-					sinonim.add(e.getKey());
+					synonym.add(e.getKey());
 			}
-			if (sinonim.size() == 0)
+			if (synonym.size() == 0)
 				System.out.println("No conozco sinónimos de esa palabra.");
 			else {
 				System.out.printf("Sinónimos de %s: ", word);
-				for (String s : sinonim)
-					System.out.print(sinonim.indexOf(s) < sinonim.size() - 1 ? s + ", " : s);
+				for (String s : synonym)
+					System.out.print(synonym.indexOf(s) < synonym.size() - 1 ? s + ", " : s);
 				System.out.println();
 			}
 		}
