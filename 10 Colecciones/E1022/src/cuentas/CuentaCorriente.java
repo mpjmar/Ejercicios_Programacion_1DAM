@@ -58,7 +58,7 @@ public class CuentaCorriente implements Operaciones {
 		
 		for (Movimiento m : movimientos) {
 			if (m.getTipo().equals("Ingreso") || m.getTipo().equals("Cargo"))
-				System.out.println(String.format(m.getTipo() + " de " + m.getCantidad() + "€  Saldo: " + m.getSaldo() + "€"));
+				System.out.println(m);
 			else {
 				if (m.getTipo().equals("Transf. recibida"))
 					System.out.println(m.getTipo() + " de " + m.getCantidad() + "€ de la cuenta " + m.getCuentaOrigen() + " | Saldo " + m.getSaldo());
