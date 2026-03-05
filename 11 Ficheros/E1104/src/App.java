@@ -44,7 +44,6 @@ public class App {
 
 			for(String s : words)
 				bw.write(s + "\n");
-			
 			bw.close();
 		} catch (FileNotFoundException fnfe) {
 			System.out.println("Fichero no encontrado.");

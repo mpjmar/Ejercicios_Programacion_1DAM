@@ -7,35 +7,33 @@ import java.io.IOException;
 public class App {
     public static void main(String[] args) throws Exception {
 
-		if (args.length != 2) {
-			System.out.println("Uso del programa E1105 PROGRAMA_ORIGINAL PROGRAMA_LIMPIO");
+		/* if (args.length != 2) {
+			System.out.println("Uso del programa: E1104 PROGRAMA_ORIGINAL PROGRAMA_LIMPIO");
 			System.exit(-1);
-		}
+		} */
 
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(args[0]));
-			BufferedWriter bw = new BufferedWriter(new FileWriter(args[1]));
-			
-			String line = "";
-			boolean isComment = false;
+			BufferedReader br = new BufferedReader(new FileReader("source.java"));
+			BufferedWriter bw = new BufferedWriter(new FileWriter("dest.java"));
 
+			boolean isComment = false;
+			String line = "";
 			while ((line = br.readLine()) != null) {
-				for (int i = 0; i < line.length(); i++) {
-					if ((line.charAt(i) == '/' && (line.charAt(i + 1) == '/') || line.charAt(i + 1) == '*'))
-						isComment = true;
-					if (line.charAt(i) == '*' && line.charAt(i + 1) == '/')
-						isComment = false;
-					if (!isComment)
-						bw.write(line.charAt(i));
-				}
+				if (line.indexOf("/*") != -1)
+					isComment = true;
+				if (line.indexOf("//") != -1)
+					continue;
+				if (!isComment)
+					bw.write(line + "\n");
+				if (line.indexOf("*/") != -1)
+					isComment = false;
 			}
-	
 			br.close();
 			bw.close();
-
 		} catch (IOException ioe) {
-			System.err.println(ioe.getMessage());
+			System.out.println("Error de lectura/escritura.");
 		}
 
+		
 	}
 }
