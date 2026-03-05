@@ -1,6 +1,6 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -20,33 +20,36 @@ public class App {
 			System.out.println("Se ha producido un error.");
 		} */
 
-		if (args.length < 1) {
-			System.out.println("Uso del programa: E1104 words.txt");
+		/* if (args.length != 1) {
+			System.out.println("Uso del programa E1104: FICHERO.TXT");
 			System.exit(-1);
-		}
+		} */
+
+		String file = "words.txt";
 
 		try {
-			BufferedReader bf = new BufferedReader(new FileReader(args[0]));
-			int len = args[0].length();
-			String name = args[0].substring(0, len - 4);
-			String ext = args[0].substring(len - 4, len);
-
+			BufferedReader bf = new BufferedReader(new FileReader(file));
+	
+			String name = file.substring(0, file.length() - 4);
+			String ext = file.substring(file.length() - 4, file.length());
 			BufferedWriter bw = new BufferedWriter(new FileWriter(name + "_sort" + ext));
-
-			List<String> wordsList = new ArrayList<>();
-			String line;
-
-			while ((line = bf.readLine()) != null) 
-				wordsList.add(line);
+			String line = "";
+			List<String> words = new ArrayList<>();
+	
+			while ((line = bf.readLine()) != null)
+				words.add(line);
 			bf.close();
-			
-			Collections.sort(wordsList);
 
-			for (String s : wordsList)
+			Collections.sort(words);
+
+			for(String s : words)
 				bw.write(s + "\n");
+			
 			bw.close();
+		} catch (FileNotFoundException fnfe) {
+			System.out.println("Fichero no encontrado.");
 		} catch (IOException ioe) {
-			System.err.println(ioe.getMessage());
+			System.out.println("Error en la lectura/escritura del archivo.");
 		}
 	}
 }
