@@ -10,7 +10,7 @@ public class App {
 
 			for (int i = 1; i <= 500; i++)
 				if (esPrimo(i))
-					bw.write(i + " ");
+					bw.write(String.valueOf(i) + "\n");
 			bw.close();
 		} catch (IOException ioe) {
 			System.out.println("No se ha podido crear el fichero.");
