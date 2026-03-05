@@ -13,18 +13,18 @@ public class App {
 					bw.write(i + " ");
 			bw.close();
 		} catch (IOException ioe) {
-			System.out.println("No se ha podido escribir en el fichero.");
+			System.out.println("No se ha podido crear el fichero.");
 		}
 	}
 
 	public static boolean esPrimo(int n) {
-		
-		if (n == 1 | n == 2)
+		if (n == 1)
 			return false;
-
-		for (int i = 2; i <= n / 2; i++)
+		
+		for (int i = 2; i <= n / 2; i++) {
 			if (n % i == 0)
 				return false;
+		}
 		return true;
 	}
 }
