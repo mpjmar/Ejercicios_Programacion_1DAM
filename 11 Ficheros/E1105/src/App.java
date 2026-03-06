@@ -17,16 +17,36 @@ public class App {
 			BufferedWriter bw = new BufferedWriter(new FileWriter("dest.java"));
 
 			boolean isComment = false;
-			String line = "";
-			while ((line = br.readLine()) != null) {
-				if (line.indexOf("/*") != -1)
+			String line1 = "";
+			String line2 = "";
+			int start = -1;
+
+			while ((line1 = br.readLine()) != null) {
+				if ((start = line1.indexOf("/*")) != -1) {
 					isComment = true;
-				if (line.indexOf("//") != -1)
-					continue;
-				if (!isComment)
-					bw.write(line + "\n");
-				if (line.indexOf("*/") != -1)
+					line2 = line1.substring(0, start);
+				}
+
+				if ((start = line1.indexOf("//")) != -1) {
+					isComment = true;
+					line2 = line1.substring(0, start);
+				}
+				
+				if ((start = line1.indexOf("*/")) != -1) {
 					isComment = false;
+					line1 = line1.substring(start + 2, line1.length());
+				}
+			
+				if (!isComment)
+					bw.write(line1 + "\n");
+				else {
+					if (line2.length() > 0)
+						bw.write(line2 + "\n");
+				}
+				
+				if (line1.contains("//"))
+					isComment = false;
+
 			}
 			br.close();
 			bw.close();

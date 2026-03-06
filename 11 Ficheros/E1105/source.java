@@ -54,7 +54,7 @@ public class source {
 				ficheroTemporal.delete();
 			} catch (IOException ioe) {
 				System.out.println("Se ha producido un error de lectura/escritura");
-				System.err.println(ioe.getMessage());
+				System.err.println(ioe.getMessage()); // esto es un comentario
 			}
 			System.out.println("hecho");
 		}
