@@ -1,0 +1,7 @@
+ID: 2 | Nombre: Bruno Sánchez 
+ID: 4 | Nombre: Daniel Torres 
+ID: 9 | Nombre: Inés Morales 
+ID: 10 | Nombre: Javier Navarro 
+ID: 12 | Nombre: Luis Herrera 
+ID: 14 | Nombre: Nicolás Castro 
+Total de registros procesados: 6
