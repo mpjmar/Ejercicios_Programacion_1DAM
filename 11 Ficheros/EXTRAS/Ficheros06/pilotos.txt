@@ -1,0 +1,10 @@
+Lewis Hamilton;Mercedes;44;Reino Unido;6
+Max Verstappen;Red Bull;1;Países Bajos;4
+Charles Leclerc;Ferrari;16;Mónaco;18
+Lando Norris;McLaren;4;Reino Unido;2
+Fernando Alonso;Aston Martin;14;España;25
+Carlos Sainz;Ferrari;55;España;10
+George Russell;Mercedes;63;Reino Unido;15
+Sergio Pérez;Red Bull;11;México;8
+Oscar Piastri;McLaren;81;Australia;1
+Pierre Gasly;Alpine;10;Francia;12
