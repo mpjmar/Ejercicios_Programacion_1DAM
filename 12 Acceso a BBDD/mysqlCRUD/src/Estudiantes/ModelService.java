@@ -9,7 +9,9 @@ import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.ArrayList;
 
-public abstract class ModelService<T extends MySerializer> {
+import dataset.DataSetInterface;
+
+public abstract class ModelService<T extends MySerializer> implements CRUD<T>, DataSetInterface{
 
     protected Connection conn;
 
@@ -19,33 +21,33 @@ public abstract class ModelService<T extends MySerializer> {
 
     /* ====================== Métodos que define cada subclase ====================== */
 
-    // Nombre de la tabla (alumnos, grupos, …)
+    // Nombre de la tabla
     protected abstract String getTableName();
 
-    // Columnas que quieres seleccionar (ej: "id, nombre, apellidos, grupo_id")
+    // Columnas que queremos seleccionar 
     protected abstract String getSelectColumns();
 
-    // Cómo pasar de ResultSet (una fila) a un objeto T
-    protected abstract T mapResultSetToobject(ResultSet rs) throws SQLException;
+    // Pasamos de ResultSet (una fila) a un objeto T
+    protected abstract T resultSetToObject(ResultSet rs) throws SQLException;
 
     // Nombre de la columna ID. Normalmente "id"
     protected String getIdColumnName() {
         return "id";
     }
 
-    // SQL para INSERT con ?, sin el id si es autoincremental
+    // Generamos SQL para INSERT con ?, sin el id si es autoincremental
     protected abstract String getInsertSql();
 
-    // Cómo rellenar el PreparedStatement de INSERT a partir del objeto
-    protected abstract void fillInsertStatement(PreparedStatement ps, T object) throws SQLException;
+    // Rellenamos el PreparedStatement de INSERT a partir del objeto
+    protected abstract void fillInsertStatement(PreparedStatement prepst, T object) throws SQLException;
 
-    // SQL para UPDATE
+    // Generamos SQL para UPDATE
     protected abstract String getUpdateSql();
 
-    // Cómo rellenar el PreparedStatement de UPDATE a partir del objeto
-    protected abstract void fillUpdateStatement(PreparedStatement ps, T object) throws SQLException;
+    // Rellenamos el PreparedStatement de UPDATE a partir del objeto
+    protected abstract void fillUpdateStatement(PreparedStatement prepst, T object) throws SQLException;
 
-    // Crear la entidad a partir de una línea CSV
+    // Creamos la entidad a partir de una línea CSV
     protected abstract T fromCsvLine(String line) throws Exception;
 
     /* ============================== CRUD genérico ============================== */
@@ -58,7 +60,7 @@ public abstract class ModelService<T extends MySerializer> {
         ResultSet rs = prepst.executeQuery();
 
         while (rs.next()) {
-            result.add(mapResultSetToobject(rs));
+            result.add(resultSetToObject(rs));
         }
 
         rs.close();
@@ -77,7 +79,7 @@ public abstract class ModelService<T extends MySerializer> {
 
         ResultSet querySet = prepst.executeQuery();
         if (querySet.next()) {
-            result = mapResultSetToobject(querySet);
+            result = resultSetToObject(querySet);
         }
 
         querySet.close();
