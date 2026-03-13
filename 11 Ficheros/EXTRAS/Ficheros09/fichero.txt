@@ -1,0 +1,3 @@
+Esto es un fichero de texto.
+Contine varias frases y cada frase se compone de varias palabras.
+Este texto se va a procesar mediante un programa en Java.
