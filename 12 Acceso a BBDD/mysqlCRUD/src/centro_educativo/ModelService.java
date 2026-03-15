@@ -1,4 +1,4 @@
-package Estudiantes;
+package centro_educativo;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -99,7 +99,7 @@ public abstract class ModelService<T extends MySerializer> implements CRUD<T>, D
             throw new SQLException("Creating object failed, no rows affected.");
         }
 
-        ResultSet keys = prepst.getGeneratedKeys();
+        ResultSet keys = prepst.getGeneratedKeys(); 
         if (keys.next()) {
             long id = keys.getLong(1);
             keys.close();

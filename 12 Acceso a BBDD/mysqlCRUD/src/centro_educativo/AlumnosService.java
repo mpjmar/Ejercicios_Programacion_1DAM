@@ -1,13 +1,10 @@
-package Estudiantes;
+package centro_educativo;
 
-import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-
-import dataset.DataSetInterface;
 
 public class AlumnosService extends ModelService<Alumno> {
     
@@ -54,7 +51,7 @@ public class AlumnosService extends ModelService<Alumno> {
 			prepst.setLong(3, alumno.getGrupoId());
 	}
 
-	// Creamos la sentencia UPDATE
+	// Creamos la sentencia SQL para UPDATE
 	@Override
 	protected String getUpdateSql() {
 		return "UPDATE alumnos SET nombre = ?, apellidos = ?, grupo_id = ? WHERE id = ?";

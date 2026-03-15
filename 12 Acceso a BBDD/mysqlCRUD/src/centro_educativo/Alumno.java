@@ -1,4 +1,4 @@
-package Estudiantes;
+package centro_educativo;
 
 public class Alumno implements MySerializer {
     long id;

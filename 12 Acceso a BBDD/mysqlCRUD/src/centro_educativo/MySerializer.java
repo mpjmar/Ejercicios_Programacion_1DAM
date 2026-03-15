@@ -1,4 +1,4 @@
-package Estudiantes;
+package centro_educativo;
 
 public interface MySerializer {
     public String serialize();

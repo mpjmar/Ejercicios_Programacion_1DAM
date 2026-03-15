@@ -1,4 +1,4 @@
-package Estudiantes;
+package centro_educativo;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
