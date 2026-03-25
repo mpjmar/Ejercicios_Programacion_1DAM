@@ -1,17 +1,21 @@
 package centro_educativo;
 
 public class Grupo implements MySerializer {
-    long id;
+    Long id;
     String nombre;
     String profesor;
 
-    public Grupo(){
-        this(0, "", "");
+    public Grupo() {
+        this(null, "", "");
     }
 
-    // COMPROBAR ID AUTOINCREMENTAL??
-    public Grupo(long id, String nombre, String profesor){
+    public Grupo(Long id, String nombre, String profesor) {
         this.id = id;
+        this.nombre = nombre;
+        this.profesor = profesor;
+    }
+
+    public Grupo(String nombre, String profesor) {
         this.nombre = nombre;
         this.profesor = profesor;
     }

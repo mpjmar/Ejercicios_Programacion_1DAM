@@ -88,6 +88,7 @@ public class ModelService<T extends MySerializer> implements CRUD<T>, DataSetInt
             throw new SQLException("Creating object failed, no rows affected.");
         }
 
+		// Obtenemos el ID generado por la BBDD
         ResultSet keys = prepst.getGeneratedKeys(); 
         if (keys.next()) {
             long id = keys.getLong(1);
@@ -201,6 +202,6 @@ public class ModelService<T extends MySerializer> implements CRUD<T>, DataSetInt
 
     // Creamos la entidad a partir de una línea CSV
     protected T fromCsvLine(String line) throws Exception {
-        return new T<>(line);
-    }
+
+	}
 }
