@@ -9,6 +9,7 @@ public class Grupo implements MySerializer {
         this(0, "", "");
     }
 
+    // COMPROBAR ID AUTOINCREMENTAL??
     public Grupo(long id, String nombre, String profesor){
         this.id = id;
         this.nombre = nombre;

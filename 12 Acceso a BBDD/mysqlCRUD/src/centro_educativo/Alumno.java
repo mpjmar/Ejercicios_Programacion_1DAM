@@ -21,6 +21,7 @@ public class Alumno implements MySerializer {
         deserialize(data);
     }
 
+    // COMPROBAR ID AUTOINCREMENTAL??
     public Alumno(long id, String nombre, String apellidos, Long grupoId){
         this.id = id;
         this.nombre = nombre;

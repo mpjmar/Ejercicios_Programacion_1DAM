@@ -1,6 +1,5 @@
 package centro_educativo;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,7 +8,6 @@ import java.sql.Types;
 public class AlumnosService {
 
 	// Pasamos de ResultSet (la fila que devuelve la consulta) a un objeto Alumno
-	@Override
 	protected Alumno resultSetToObject(ResultSet rs) throws SQLException {
 		long id = rs.getLong("id");
 		String nombre = rs.getString("nombre");
@@ -19,7 +17,6 @@ public class AlumnosService {
 	}
 
 	// Rellenamos el PreparedStatement de INSERT a partir del Alumno
-	@Override
 	protected void fillInsertStatement(PreparedStatement prepst, Alumno alumno) throws SQLException {
 		prepst.setString(1, alumno.getNombre());
 		prepst.setString(2, alumno.getApellidos());
@@ -30,7 +27,6 @@ public class AlumnosService {
 	}
 
 	// Rellenamos el PreparedStatement de UPDATE a partir del objeto
-	@Override
 	protected void fillUpdateStatement(PreparedStatement prepst, Alumno alumno) throws SQLException {
 		prepst.setString(1, alumno.getNombre());
 		prepst.setString(2, alumno.getApellidos());
@@ -42,7 +38,6 @@ public class AlumnosService {
 	}
 
 	// Creamos el Alumno a partir de una línea CSV
-	@Override
 	protected Alumno fromCsvLine(String line) throws Exception {
 		return new Alumno(line);
 	}

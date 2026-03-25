@@ -1,25 +1,20 @@
-import java.sql.*;
-
+import centro_educativo.Alumno;
+import centro_educativo.Grupo;
+import centro_educativo.ModelService;
 import connection.ConnectionPool;
-
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import centro_educativo.Alumno;
-import centro_educativo.AlumnosService;
-import centro_educativo.Grupo;
-import centro_educativo.GruposService;
-import centro_educativo.ModelService;
-
 public class App {
 
-	private static String[] aColumns = {"id", "nombre", "apellidos", "grupo_id"};
-	private static String[] gColumns = {"id", "nombre", "profesor"};
+	private static final String[] aColumns = {"id", "nombre", "apellidos", "grupo_id"};
+	private static final String[] gColumns = {"id", "nombre", "profesor"};
 
-    public static void listarGrupos(ModelService service){
+    public static void listarGrupos(ModelService<Grupo> service){
         try {
             ArrayList<Grupo> grupos = service.requestAll("grupo", gColumns);
-            if(grupos.size() == 0){
+            if(grupos.isEmpty()){
                 System.out.println("No hay grupos de alumnos");
             }
             else{
@@ -33,10 +28,10 @@ public class App {
         }
     }
 
-    public static void listarAlumnos(ModelService service){
+    public static void listarAlumnos(ModelService<Alumno> service){
         try {
             ArrayList<Alumno> alumnos = service.requestAll("alumno", aColumns);
-            if(alumnos.size() == 0){
+            if(alumnos.isEmpty()){
                 System.out.println("No hay alumnos");
             }
             else{
@@ -50,10 +45,10 @@ public class App {
         }
     }
 
-    public static void listarAlumnosPorGrupo(ModelService service, long idGrupo){
+    public static void listarAlumnosPorGrupo(ModelService<Alumno> service, long idGrupo){
         try {
             ArrayList<Alumno> alumnos = service.requestAll("alumno", aColumns);
-            if(alumnos.size() == 0){
+            if(alumnos.isEmpty()){
                 System.out.println("No hay alumnos");
             }
             else{
@@ -79,12 +74,12 @@ public class App {
         String clave = "1234";
 
         ConnectionPool pool = new ConnectionPool(url, usuario, clave);
-        ModelService<Grupo> gservice = new ModelService<Grupo>(pool.getConnection());
-        ModelService<Alumno> aservice = new ModelService<Alumno>(pool.getConnection());
+        ModelService<Grupo> gService = new ModelService<>(pool.getConnection());
+        ModelService<Alumno> aService = new ModelService<>(pool.getConnection());
 
         String nombre, profesor;
 		String nombreAlum, apeAlum, respuesta;
-        long id = -1, idAlum = -1;
+        long id = -1, idAlum;
         boolean salir = false;
         while(!salir){
             try {
@@ -103,7 +98,7 @@ public class App {
                         System.out.println("Introduzca el nombre del tutor: ");
                         profesor = sc.nextLine();
                         try {
-                            id = gservice.create("grupo", gColumns, new Grupo(0, nombre, profesor));
+                            id = gService.create("grupo", gColumns, new Grupo(0, nombre, profesor));
                             System.out.printf("Grupo creado correctamente (id: %d)\n", id);
                         } catch (SQLException e) {
                             if(e.getErrorCode() == 1062){
@@ -119,7 +114,7 @@ public class App {
 								System.out.println("Introduzca los apellidos del alumno: ");
 								apeAlum = System.console().readLine();
 								try {
-									idAlum = aservice.create("alumno", aColumns, new Alumno(0, nombreAlum, apeAlum, id));
+									idAlum = aService.create("alumno", aColumns, new Alumno(0, nombreAlum, apeAlum, id));
 									System.out.printf("Alumno creado correctamente (id: %d)\n", idAlum);
 								} catch (SQLException e) {
 									if(e.getErrorCode() == 1062){
@@ -133,7 +128,7 @@ public class App {
                         break;
                     case 2:
                         System.out.println("Elija el grupo a editar");
-                        listarGrupos(gservice);
+                        listarGrupos(gService);
                         id = Integer.parseInt(sc.nextLine());
 						System.out.println("¿Desea editar el grupo o un alumno? (g/a): ");
 						respuesta = System.console().readLine().toLowerCase();
@@ -143,7 +138,7 @@ public class App {
 							System.out.println("Introduzca el nombre del tutor: ");
 							profesor = sc.nextLine();
 							try {
-								int rowAffected = gservice.update(new Grupo(id, nombre, profesor));
+								int rowAffected = gService.update("grupo", gColumns, new Grupo(id, nombre, profesor));
 								if(rowAffected == 1)
 									System.out.println("Grupo actualizado correctamente");
 								else
@@ -155,7 +150,7 @@ public class App {
 						}
 						else if (respuesta.equals("a")) {
 							System.out.println("Elija el alumno a editar: ");
-							listarAlumnosPorGrupo(aservice, id);
+							listarAlumnosPorGrupo(aService, id);
 							System.out.println("Introduzca el ID del alumno: ");
 							idAlum = Long.parseLong(System.console().readLine());
 							System.out.println("Introduzca el nombre del alumno: ");
@@ -163,7 +158,7 @@ public class App {
 							System.out.println("Introduzca los apellidos del alumno: ");
 							apeAlum = sc.nextLine();
 							try {
-								int rowAffected = aservice.update(new Alumno(idAlum, nombreAlum, apeAlum, id));
+								int rowAffected = aService.update("alumno", aColumns, new Alumno(idAlum, nombreAlum, apeAlum, id));
 								if(rowAffected == 1)
 									System.out.println("Grupo actualizado correctamente");
 								else
@@ -178,26 +173,26 @@ public class App {
                         break;
                     case 3:
                         System.out.println("Elija el grupo a borrar");
-                        listarGrupos(gservice);
+                        listarGrupos(gService);
                         id = Integer.parseInt(sc.nextLine());
                         try {
-                            gservice.delete("grupo", id);
+                            gService.delete("grupo", id);
                         } catch (SQLException e) {
                             System.out.println("Ha ocurrido un error.");
             				e.printStackTrace();
                         }
                         break;
                     case 4:
-                        listarGrupos(gservice);
+                        listarGrupos(gService);
                         break;
                     case 5:
                         System.out.println("Elija el grupo a visualizar");
-                        listarGrupos(gservice);
+                        listarGrupos(gService);
                         id = Integer.parseInt(sc.nextLine());
-                        Grupo grupo = gservice.requestById(gColumns, "grupo", id);
+                        Grupo grupo = gService.requestById("grupo", gColumns, id);
                         if(grupo!=null) {
                             System.out.println(grupo);
-							listarAlumnosPorGrupo(aservice, id);
+							listarAlumnosPorGrupo(aService, id);
 						}
                         break;
                     case 6:
@@ -210,7 +205,7 @@ public class App {
                 e.printStackTrace();
             }
         }
-         
+        sc.close(); 
     }
 }
 

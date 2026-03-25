@@ -19,22 +19,9 @@ public class ModelService<T extends MySerializer> implements CRUD<T>, DataSetInt
         this.conn = conn;
     }
 
-    /* ====================== Métodos que define cada subclase ====================== */
-
-    // Pasamos de ResultSet (una fila) a un objeto T
-    protected T resultSetToObject(ResultSet rs) throws SQLException;
-
-    // Rellenamos el PreparedStatement de INSERT a partir del objeto
-    protected void fillInsertStatement(PreparedStatement prepst, T object) throws SQLException;
-
-    // Rellenamos el PreparedStatement de UPDATE a partir del objeto
-    protected void fillUpdateStatement(PreparedStatement prepst, T object) throws SQLException;
-
-    // Creamos la entidad a partir de una línea CSV
-    protected T fromCsvLine(String line) throws Exception;
-
     /* ============================== CRUD genérico ============================== */
 
+    @Override
     public ArrayList<T> requestAll(String tableName, String[] columns) throws SQLException {
         ArrayList<T> result = new ArrayList<>();
 
@@ -56,6 +43,7 @@ public class ModelService<T extends MySerializer> implements CRUD<T>, DataSetInt
         return result;
     }
 
+    @Override
     public T requestById(String tableName, String[] columns, long id) throws SQLException {
         T result = null;
 
@@ -78,6 +66,7 @@ public class ModelService<T extends MySerializer> implements CRUD<T>, DataSetInt
         return result;
     }
 
+    @Override
     public long create(String tableName, String[] columns, T object) throws SQLException {
 		String sqlColumns = "";
 		String sqlValues = "";
@@ -112,6 +101,7 @@ public class ModelService<T extends MySerializer> implements CRUD<T>, DataSetInt
         }
     }
 
+    @Override
     public int update(String tableName, String[] columns, T object) throws SQLException {
 		String sqlColumns = "";
 		for (String s : columns)
@@ -129,6 +119,7 @@ public class ModelService<T extends MySerializer> implements CRUD<T>, DataSetInt
         return affectedRows;
     }
 
+    @Override
     public boolean delete(String tableName, long id) throws SQLException {
         String sql = String.format("DELETE FROM %s WHERE id = ?;", tableName);
                    
@@ -143,14 +134,15 @@ public class ModelService<T extends MySerializer> implements CRUD<T>, DataSetInt
 
     /* =========================== Import / Export CSV =========================== */
 
-    public void importFromCSV(String file) throws Exception {
+    @Override
+    public void importFromCSV(String file, String tableName, String[] columns) throws Exception {
         BufferedReader br = null;
         try {
             br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8));
             String line;
             while ((line = br.readLine()) != null) {
                 T object = fromCsvLine(line);
-                create(object);
+                create(tableName, columns, object);
             }
         } catch (IOException e) {
             throw new Exception("Ocurrió un error de E/S " + e.toString());
@@ -167,11 +159,12 @@ public class ModelService<T extends MySerializer> implements CRUD<T>, DataSetInt
         }
     }
 
-    public void exportToCSV(String file) throws Exception {
+    @Override
+    public void exportToCSV(String file, String tableName, String[] columns) throws Exception {
         BufferedWriter bw = null;
         try {
             bw = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8));
-            ArrayList<T> list = this.requestAll();
+            ArrayList<T> list = this.requestAll(tableName, columns);
             for (T object : list) {
                 bw.write(object.serialize() + "\n");
             }
@@ -187,5 +180,27 @@ public class ModelService<T extends MySerializer> implements CRUD<T>, DataSetInt
                 bw.close();
             }
         }
+    }
+
+    /* =========================== OBJETOS =========================== */
+
+    // Pasamos de ResultSet (una fila) a un objeto T
+    protected T resultSetToObject(ResultSet rs) throws SQLException {
+
+    }
+
+    // Rellenamos el PreparedStatement de INSERT a partir del objeto
+    protected void fillInsertStatement(PreparedStatement prepst, T object) throws SQLException {
+
+    }
+
+    // Rellenamos el PreparedStatement de UPDATE a partir del objeto
+    protected void fillUpdateStatement(PreparedStatement prepst, T object) throws SQLException {
+
+    }
+
+    // Creamos la entidad a partir de una línea CSV
+    protected T fromCsvLine(String line) throws Exception {
+        return new T<>(line);
     }
 }
