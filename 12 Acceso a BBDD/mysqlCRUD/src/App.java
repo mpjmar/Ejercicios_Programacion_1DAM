@@ -9,11 +9,16 @@ import centro_educativo.Alumno;
 import centro_educativo.AlumnosService;
 import centro_educativo.Grupo;
 import centro_educativo.GruposService;
+import centro_educativo.ModelService;
 
 public class App {
-    public static void listarGrupos(GruposService service){
+
+	private static String[] aColumns = {"id", "nombre", "apellidos", "grupo_id"};
+	private static String[] gColumns = {"id", "nombre", "profesor"};
+
+    public static void listarGrupos(ModelService service){
         try {
-            ArrayList<Grupo> grupos = service.requestAll();
+            ArrayList<Grupo> grupos = service.requestAll("grupo", gColumns);
             if(grupos.size() == 0){
                 System.out.println("No hay grupos de alumnos");
             }
@@ -28,9 +33,9 @@ public class App {
         }
     }
 
-    public static void listarAlumnos(AlumnosService service){
+    public static void listarAlumnos(ModelService service){
         try {
-            ArrayList<Alumno> alumnos = service.requestAll();
+            ArrayList<Alumno> alumnos = service.requestAll("alumno", aColumns);
             if(alumnos.size() == 0){
                 System.out.println("No hay alumnos");
             }
@@ -45,9 +50,9 @@ public class App {
         }
     }
 
-    public static void listarAlumnosPorGrupo(AlumnosService service, long idGrupo){
+    public static void listarAlumnosPorGrupo(ModelService service, long idGrupo){
         try {
-            ArrayList<Alumno> alumnos = service.requestAll();
+            ArrayList<Alumno> alumnos = service.requestAll("alumno", aColumns);
             if(alumnos.size() == 0){
                 System.out.println("No hay alumnos");
             }
@@ -74,8 +79,8 @@ public class App {
         String clave = "1234";
 
         ConnectionPool pool = new ConnectionPool(url, usuario, clave);
-        GruposService gservice = new GruposService(pool.getConnection());
-        AlumnosService aservice = new AlumnosService(pool.getConnection());
+        ModelService<Grupo> gservice = new ModelService<Grupo>(pool.getConnection());
+        ModelService<Alumno> aservice = new ModelService<Alumno>(pool.getConnection());
 
         String nombre, profesor;
 		String nombreAlum, apeAlum, respuesta;
@@ -98,7 +103,7 @@ public class App {
                         System.out.println("Introduzca el nombre del tutor: ");
                         profesor = sc.nextLine();
                         try {
-                            id = gservice.create(new Grupo(0, nombre, profesor));    
+                            id = gservice.create("grupo", gColumns, new Grupo(0, nombre, profesor));
                             System.out.printf("Grupo creado correctamente (id: %d)\n", id);
                         } catch (SQLException e) {
                             if(e.getErrorCode() == 1062){
@@ -114,7 +119,7 @@ public class App {
 								System.out.println("Introduzca los apellidos del alumno: ");
 								apeAlum = System.console().readLine();
 								try {
-									idAlum = aservice.create(new Alumno(0, nombreAlum, apeAlum, id));
+									idAlum = aservice.create("alumno", aColumns, new Alumno(0, nombreAlum, apeAlum, id));
 									System.out.printf("Alumno creado correctamente (id: %d)\n", idAlum);
 								} catch (SQLException e) {
 									if(e.getErrorCode() == 1062){
@@ -176,7 +181,7 @@ public class App {
                         listarGrupos(gservice);
                         id = Integer.parseInt(sc.nextLine());
                         try {
-                            gservice.delete(id);
+                            gservice.delete("grupo", id);
                         } catch (SQLException e) {
                             System.out.println("Ha ocurrido un error.");
             				e.printStackTrace();
@@ -189,7 +194,7 @@ public class App {
                         System.out.println("Elija el grupo a visualizar");
                         listarGrupos(gservice);
                         id = Integer.parseInt(sc.nextLine());
-                        Grupo grupo = gservice.requestById(id);
+                        Grupo grupo = gservice.requestById(gColumns, "grupo", id);
                         if(grupo!=null) {
                             System.out.println(grupo);
 							listarAlumnosPorGrupo(aservice, id);

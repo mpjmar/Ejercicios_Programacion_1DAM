@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 import dataset.DataSetInterface;
 
-public abstract class ModelService<T extends MySerializer> implements CRUD<T>, DataSetInterface{
+public class ModelService<T extends MySerializer> implements CRUD<T>, DataSetInterface{
 
     protected Connection conn;
 
@@ -21,41 +21,29 @@ public abstract class ModelService<T extends MySerializer> implements CRUD<T>, D
 
     /* ====================== Métodos que define cada subclase ====================== */
 
-    // Nombre de la tabla
-    protected abstract String getTableName();
-
-    // Columnas que queremos seleccionar 
-    protected abstract String getSelectColumns();
-
     // Pasamos de ResultSet (una fila) a un objeto T
-    protected abstract T resultSetToObject(ResultSet rs) throws SQLException;
-
-    // Nombre de la columna ID. Normalmente "id"
-    protected String getIdColumnName() {
-        return "id";
-    }
-
-    // Generamos SQL para INSERT con ?, sin el id si es autoincremental
-    protected abstract String getInsertSql();
+    protected T resultSetToObject(ResultSet rs) throws SQLException;
 
     // Rellenamos el PreparedStatement de INSERT a partir del objeto
-    protected abstract void fillInsertStatement(PreparedStatement prepst, T object) throws SQLException;
-
-    // Generamos SQL para UPDATE
-    protected abstract String getUpdateSql();
+    protected void fillInsertStatement(PreparedStatement prepst, T object) throws SQLException;
 
     // Rellenamos el PreparedStatement de UPDATE a partir del objeto
-    protected abstract void fillUpdateStatement(PreparedStatement prepst, T object) throws SQLException;
+    protected void fillUpdateStatement(PreparedStatement prepst, T object) throws SQLException;
 
     // Creamos la entidad a partir de una línea CSV
-    protected abstract T fromCsvLine(String line) throws Exception;
+    protected T fromCsvLine(String line) throws Exception;
 
     /* ============================== CRUD genérico ============================== */
 
-    public ArrayList<T> requestAll() throws SQLException {
+    public ArrayList<T> requestAll(String tableName, String[] columns) throws SQLException {
         ArrayList<T> result = new ArrayList<>();
 
-        String sql = "SELECT " + getSelectColumns() + " FROM " + getTableName();
+		String sqlColumns = "";
+		for (String s : columns)
+			sqlColumns += s + ", ";
+		sqlColumns = sqlColumns.substring(0, sqlColumns.length() - 2);
+        String sql = String.format("SELECT %s FROM %s;", sqlColumns, tableName);
+
         PreparedStatement prepst = this.conn.prepareStatement(sql);
         ResultSet rs = prepst.executeQuery();
 
@@ -68,11 +56,14 @@ public abstract class ModelService<T extends MySerializer> implements CRUD<T>, D
         return result;
     }
 
-    public T requestById(long id) throws SQLException {
+    public T requestById(String tableName, String[] columns, long id) throws SQLException {
         T result = null;
-        String sql = "SELECT " + getSelectColumns()
-                   + " FROM " + getTableName()
-                   + " WHERE " + getIdColumnName() + " = ?";
+
+		String sqlColumns = "";
+		for (String s : columns)
+			sqlColumns += s + ", ";
+		sqlColumns = sqlColumns.substring(0, sqlColumns.length() - 2);
+        String sql = String.format("SELECT %s FROM %s WHERE id = ?;", sqlColumns, tableName);
 
         PreparedStatement prepst = this.conn.prepareStatement(sql);
         prepst.setLong(1, id);
@@ -87,9 +78,18 @@ public abstract class ModelService<T extends MySerializer> implements CRUD<T>, D
         return result;
     }
 
-    public long create(T object) throws SQLException {
-        String sql = getInsertSql();
-        PreparedStatement prepst = this.conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+    public long create(String tableName, String[] columns, T object) throws SQLException {
+		String sqlColumns = "";
+		String sqlValues = "";
+		for (String s : columns) {
+			sqlColumns += s + ", ";
+			sqlValues += "?, ";
+		}
+		sqlColumns = sqlColumns.substring(0, sqlColumns.length() - 2);
+		sqlValues = sqlValues.substring(0, sqlValues.length() - 2);
+        String sql = String.format("INSERT INTO %s(%s) VALUES(%s);", tableName, sqlColumns, sqlValues);
+        
+		PreparedStatement prepst = this.conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
         fillInsertStatement(prepst, object);
 
@@ -112,9 +112,14 @@ public abstract class ModelService<T extends MySerializer> implements CRUD<T>, D
         }
     }
 
-    public int update(T object) throws SQLException {
-        String sql = getUpdateSql();
-        PreparedStatement prepst = this.conn.prepareStatement(sql);
+    public int update(String tableName, String[] columns, T object) throws SQLException {
+		String sqlColumns = "";
+		for (String s : columns)
+			sqlColumns += s + " = ?, ";
+		sqlColumns = sqlColumns.substring(0, sqlColumns.length() - 2);
+        String sql = String.format("UPDATE %s SET %s WHERE id = ?;", tableName, sqlColumns);
+
+		PreparedStatement prepst = this.conn.prepareStatement(sql);
 
         fillUpdateStatement(prepst, object);
 
@@ -124,10 +129,9 @@ public abstract class ModelService<T extends MySerializer> implements CRUD<T>, D
         return affectedRows;
     }
 
-    public boolean delete(long id) throws SQLException {
-        String sql = "DELETE FROM " + getTableName()
-                   + " WHERE " + getIdColumnName() + " = ?";
-
+    public boolean delete(String tableName, long id) throws SQLException {
+        String sql = String.format("DELETE FROM %s WHERE id = ?;", tableName);
+                   
         PreparedStatement prepst = this.conn.prepareStatement(sql);
         prepst.setLong(1, id);
 
