@@ -1,5 +1,8 @@
 package centro_educativo;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class Alumno implements MySerializer {
     Long id;
     String nombre;
@@ -84,7 +87,7 @@ public class Alumno implements MySerializer {
     public void deserialize(String data) {
         String[] datos = data.split(";");
         
-        this.id = Long.parseLong(datos[0].substring(1, datos[0].length()-1));
+        this.id = Long.parseLong(this.substractQuotes(datos[0]));
         this.nombre = this.substractQuotes(datos[1]);
         this.apellidos = this.substractQuotes(datos[2]);
         
@@ -93,4 +96,12 @@ public class Alumno implements MySerializer {
         else
             this.grupoId = Long.parseLong(this.substractQuotes(datos[3]));
     }
+
+    protected Alumno resultSetToAlumno(ResultSet rs) throws SQLException {
+		long idDb = rs.getLong("id");
+		String nombreDb = rs.getString("nombre");
+		String apellidosDb = rs.getString("apellidos");
+		Long grupo_id = rs.getLong("grupo_id") == 0 ? null : rs.getLong("grupo_id");
+		return new Alumno(idDb, nombreDb, apellidosDb, grupo_id);
+	}
 }

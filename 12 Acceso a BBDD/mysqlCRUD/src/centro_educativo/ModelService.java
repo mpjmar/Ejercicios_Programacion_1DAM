@@ -1,5 +1,6 @@
 package centro_educativo;
 
+import dataset.DataSetInterface;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -8,8 +9,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.ArrayList;
-
-import dataset.DataSetInterface;
 
 public class ModelService<T extends MySerializer> implements CRUD<T>, DataSetInterface{
 
@@ -35,7 +34,7 @@ public class ModelService<T extends MySerializer> implements CRUD<T>, DataSetInt
         ResultSet rs = prepst.executeQuery();
 
         while (rs.next()) {
-            result.add(resultSetToObject(rs));
+            result.add(resultSetToObject(rs, tableName));
         }
 
         rs.close();
@@ -58,7 +57,7 @@ public class ModelService<T extends MySerializer> implements CRUD<T>, DataSetInt
 
         ResultSet querySet = prepst.executeQuery();
         if (querySet.next()) {
-            result = resultSetToObject(querySet);
+            result = resultSetToObject(querySet, tableName);
         }
 
         querySet.close();
@@ -142,7 +141,7 @@ public class ModelService<T extends MySerializer> implements CRUD<T>, DataSetInt
             br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8));
             String line;
             while ((line = br.readLine()) != null) {
-                T object = fromCsvLine(line);
+                T object = fromCsvLine(line, tableName);
                 create(tableName, columns, object);
             }
         } catch (IOException e) {
@@ -186,22 +185,76 @@ public class ModelService<T extends MySerializer> implements CRUD<T>, DataSetInt
     /* =========================== OBJETOS =========================== */
 
     // Pasamos de ResultSet (una fila) a un objeto T
-    protected T resultSetToObject(ResultSet rs) throws SQLException {
-
+    private T resultSetToObject(ResultSet rs, String tableName) throws SQLException {
+        switch (tableName) {
+            case "alumno" -> { 
+                Alumno alumno = new Alumno();
+                alumno.resultSetToAlumno(rs);
+                return (T) alumno ; 
+            }
+            case "grupo" -> {
+                Grupo grupo = new Grupo();
+                grupo.resultSetToGrupo(rs);
+                return (T) grupo; 
+            }
+            default -> { 
+                return null; 
+            }
+        }
     }
 
     // Rellenamos el PreparedStatement de INSERT a partir del objeto
-    protected void fillInsertStatement(PreparedStatement prepst, T object) throws SQLException {
-
+    private void fillInsertStatement(PreparedStatement prepst, T object) throws SQLException {
+        switch (object.getClass().getSimpleName().toLowerCase()) {
+            case "alumno" -> { 
+                Alumno alumno = (Alumno) object;
+                prepst.setString(1, alumno.getNombre());
+                prepst.setString(2, alumno.getApellidos());
+                if (alumno.getGrupoId() == null)
+                    prepst.setNull(3, Types.INTEGER);
+                else
+                    prepst.setLong(3, alumno.getGrupoId());
+            }
+            case "grupo" -> {
+                Grupo grupo = (Grupo) object;
+                prepst.setString(1, grupo.getNombre());
+		        prepst.setString(2, grupo.getProfesor());
+            }
+            default -> { 
+            }
+        }
     }
 
     // Rellenamos el PreparedStatement de UPDATE a partir del objeto
-    protected void fillUpdateStatement(PreparedStatement prepst, T object) throws SQLException {
-
+    private void fillUpdateStatement(PreparedStatement prepst, T object) throws SQLException {
+        switch (object.getClass().getSimpleName().toLowerCase()) {
+            case "alumno" -> { 
+                Alumno alumno = (Alumno) object;
+                prepst.setString(1, alumno.getNombre());
+                prepst.setString(2, alumno.getApellidos());
+                if (alumno.getGrupoId() == null)
+                    prepst.setNull(3, Types.INTEGER);
+                else
+                    prepst.setLong(3, alumno.getGrupoId());
+                prepst.setLong(4, alumno.getId());
+            }
+            case "grupo" -> {
+                Grupo grupo = (Grupo) object;
+                prepst.setString(1, grupo.getNombre());
+                prepst.setString(2, grupo.getProfesor());
+                prepst.setLong(3, grupo.getId());
+            }
+            default -> { 
+            }
+        }
     }
 
     // Creamos la entidad a partir de una línea CSV
-    protected T fromCsvLine(String line) throws Exception {
-
+    private T fromCsvLine(String line, String tableName) throws Exception {
+        switch (tableName) {
+            case "alumno" -> { return (T) new Alumno(line); }
+            case "grupo" -> { return (T) new Grupo(line); }
+            default -> { return null; }
+        }
 	}
 }

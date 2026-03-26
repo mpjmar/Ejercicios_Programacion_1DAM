@@ -1,5 +1,8 @@
 package centro_educativo;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class Grupo implements MySerializer {
     Long id;
     String nombre;
@@ -72,8 +75,16 @@ public class Grupo implements MySerializer {
     public void deserialize(String data) {
         String[] datos = data.split(";");
         
-        this.id = Integer.parseInt(datos[0].substring(1, datos[0].length()-1));
+        this.id = Long.parseLong(this.substractQuotes(datos[0]));
         this.nombre = this.substractQuotes(datos[1]);
         this.profesor = this.substractQuotes(datos[2]);
     }
+
+    protected Grupo resultSetToGrupo(ResultSet rs) throws SQLException {
+		long idDb = rs.getLong("id");
+		String nombreDb = rs.getString("nombre");
+		String profesorDb = rs.getString("profesor");
+
+		return new Grupo(idDb, nombreDb, profesorDb);
+	}
 }
